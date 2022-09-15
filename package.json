@@ -1,15 +1,16 @@
 {
-  "name": "@maap-jupyterlab/user-management-jupyter-extension",
-  "version": "1.0.0",
+  "name": "@maap-jupyterlab/user-workspace-management-jupyter-extension",
+  "version": "0.0.1",
   "description": "Manage user resources.",
   "keywords": [
     "jupyter",
     "jupyterlab",
-    "jupyterlab-extension"
+    "jupyterlab-extension",
+    "workspace"
   ],
-  "homepage": "https://github.com/MAAP-Project/user-management-jupyter-extension",
+  "homepage": "https://github.com/MAAP-Project/user-workspace-management-jupyter-extension",
   "bugs": {
-    "url": "https://github.com/MAAP-Project/user-management-jupyter-extension/issues"
+    "url": "https://github.com/MAAP-Project/user-workspace-management-jupyter-extension/issues"
   },
   "license": "Apache 2.0",
   "author": {
@@ -25,7 +26,7 @@
   "style": "style/index.css",
   "repository": {
     "type": "git",
-    "url": "https://github.com/MAAP-Project/user-management-jupyter-extension.git"
+    "url": "https://github.com/MAAP-Project/user-workspace-management-jupyter-extension.git"
   },
   "scripts": {
     "build": "jlpm build:lib && jlpm build:labextension:dev",
@@ -36,7 +37,7 @@
     "clean": "jlpm clean:lib",
     "clean:lib": "rimraf lib tsconfig.tsbuildinfo",
     "clean:lintcache": "rimraf .eslintcache .stylelintcache",
-    "clean:labextension": "rimraf user_management_jupyter_extension/labextension",
+    "clean:labextension": "rimraf user_workspace_management_jupyter_extension_extension/labextension",
     "clean:all": "jlpm clean:lib && jlpm clean:labextension && jlpm clean:lintcache",
     "eslint": "jlpm eslint:check --fix",
     "eslint:check": "eslint . --cache --ext .ts,.tsx",
@@ -86,7 +87,7 @@
   },
   "jupyterlab": {
     "extension": true,
-    "outputDir": "user_management_jupyter_extension/labextension"
+    "outputDir": "user_workspace_management_jupyter_extension_extension/labextension"
   },
   "jupyter-releaser": {
     "hooks": {

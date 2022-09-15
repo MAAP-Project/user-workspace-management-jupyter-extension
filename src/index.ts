@@ -39,7 +39,7 @@ function activateSSH(app: JupyterFrontEnd,
       });
       palette.addItem({command: open_command, category: 'SSH'});
 
-      console.log('JupyterLab ssh is activated!');
+      console.log('JupyterLab user-workspace-management extension is activated!');
 };
 
 
