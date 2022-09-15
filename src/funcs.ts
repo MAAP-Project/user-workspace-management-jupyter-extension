@@ -49,7 +49,8 @@ export async function getPresignedUrl(state: IStateDB, key:string, duration:stri
     let presignedUrl = '';
     let token = getToken();
 
-    var getUrl = new URL(PageConfig.getBaseUrl() + 'show_ssh_info/getSigneds3Url');
+    //var getUrl = new URL(PageConfig.getBaseUrl() + 'show_ssh_info/getSigneds3Url');
+    var getUrl = new URL(PageConfig.getBaseUrl() + 'jupyter-server-extension/uwm/getSignedS3Url');
     getUrl.searchParams.append('home_path', PageConfig.getOption('serverRoot'));
     getUrl.searchParams.append('key', key);
     getUrl.searchParams.append('username', profile.uname);

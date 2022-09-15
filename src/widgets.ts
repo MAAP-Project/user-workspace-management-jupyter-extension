@@ -11,7 +11,7 @@ class SshWidget extends Widget {
     body.style.display = 'flex';
     body.style.flexDirection = 'column';
 
-    request('get', PageConfig.getBaseUrl() + "show_ssh_info/get").then((res: RequestResult) => {
+    request('get', PageConfig.getBaseUrl() + "jupyter-server-extension/uwm/getSSHInfo").then((res: RequestResult) => {
       if(res.ok){
         let json_results:any = res.json();
         let ip = json_results['ip'];
@@ -58,7 +58,7 @@ export class InjectSSH {
             key = profile['public_ssh_keys'];
         }
 
-        let getUrl = new URL(PageConfig.getBaseUrl() + "show_ssh_info/inject_public_key");
+        let getUrl = new URL(PageConfig.getBaseUrl() + "jupyter-server-extension/uwm/injectPublicKey");
         getUrl.searchParams.append("key", key);
 
         if (profile['proxyGrantingTicket'] !== undefined) {

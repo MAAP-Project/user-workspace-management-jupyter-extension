@@ -65,7 +65,7 @@ const extensionUser: JupyterFrontEndPlugin<void> = {
     });
 
     palette.addItem({command:open_command,category:'User'});
-    console.log('User workspace Management extension activated!');
+    console.log('User Workspace Management extension activated!');
   }
 };
 
