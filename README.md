@@ -1,4 +1,4 @@
-# user_workspace_management_jupyter_extension_extension
+# user_workspace_management_jupyter_extension
 
 [![Github Actions Status](https://github.com/github_username/user-workspace-management-jupyter-extension/workflows/Build/badge.svg)](https://github.com/github_username/user-workspace-management-jupyter-extension/actions/workflows/build.yml)
 
@@ -15,7 +15,7 @@ A JupyterLab extension.
 To install the extension, execute:
 
 ```bash
-pip install user_workspace_management_jupyter_extension_extension
+pip install user_workspace_management_jupyter_extension
 ```
 
 ## Uninstall
@@ -23,7 +23,7 @@ pip install user_workspace_management_jupyter_extension_extension
 To remove the extension, execute:
 
 ```bash
-pip uninstall user_workspace_management_jupyter_extension_extension
+pip uninstall user_workspace_management_jupyter_extension
 ```
 
 
@@ -39,7 +39,7 @@ The `jlpm` command is JupyterLab's pinned version of
 
 ```bash
 # Clone the repo to your local environment
-# Change directory to the user_workspace_management_jupyter_extension_extension directory
+# Change directory to the user_workspace_management_jupyter_extension directory
 # Install package in development mode
 pip install -e .
 # Link your development version of the extension with JupyterLab
@@ -68,7 +68,7 @@ jupyter lab build --minimize=False
 ### Development uninstall
 
 ```bash
-pip uninstall user_workspace_management_jupyter_extension_extension
+pip uninstall user_workspace_management_jupyter_extension
 ```
 
 In development mode, you will also need to remove the symlink created by `jupyter labextension develop`

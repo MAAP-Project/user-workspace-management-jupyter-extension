@@ -1,5 +1,5 @@
 """
-user_workspace_management_jupyter_extension_extension setup
+user_workspace_management_jupyter_extension setup
 """
 import json
 import sys
@@ -13,7 +13,7 @@ HERE = Path(__file__).parent.resolve()
 pkg_json = json.loads((HERE / "package.json").read_bytes())
 
 # The name of the project
-name = "user_workspace_management_jupyter_extension_extension"
+name = "user_workspace_management_jupyter_extension"
 
 lab_path = (HERE / pkg_json["jupyterlab"]["outputDir"])
 

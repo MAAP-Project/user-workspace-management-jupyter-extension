@@ -37,7 +37,7 @@
     "clean": "jlpm clean:lib",
     "clean:lib": "rimraf lib tsconfig.tsbuildinfo",
     "clean:lintcache": "rimraf .eslintcache .stylelintcache",
-    "clean:labextension": "rimraf user_workspace_management_jupyter_extension_extension/labextension",
+    "clean:labextension": "rimraf user_workspace_management_jupyter_extension/labextension",
     "clean:all": "jlpm clean:lib && jlpm clean:labextension && jlpm clean:lintcache",
     "eslint": "jlpm eslint:check --fix",
     "eslint:check": "eslint . --cache --ext .ts,.tsx",
@@ -58,6 +58,7 @@
     "@jupyterlab/apputils": "^3.3.2",
     "@jupyterlab/filebrowser": "^3.3.2",
     "@jupyterlab/launcher": "^3.3.2",
+    "@maap-jupyterlab/user-workspace-management-jupyter-extension": "^0.0.1",
     "jupyterlab_toastify": "^4.2.1"
   },
   "devDependencies": {
@@ -87,7 +88,7 @@
   },
   "jupyterlab": {
     "extension": true,
-    "outputDir": "user_workspace_management_jupyter_extension_extension/labextension"
+    "outputDir": "user_workspace_management_jupyter_extension/labextension"
   },
   "jupyter-releaser": {
     "hooks": {
