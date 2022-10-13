@@ -1,35 +1,47 @@
-# user_workspace_management_jupyter_extension
+# User Workspace Management Jupyter Extension
 
-[![Github Actions Status](https://github.com/github_username/user-workspace-management-jupyter-extension/workflows/Build/badge.svg)](https://github.com/github_username/user-workspace-management-jupyter-extension/actions/workflows/build.yml)
+This extension offers general workspace management features. These include:
 
-A JupyterLab extension.
+1. Displays ssh info for a user to get onto the kubernetes cluster container for their workspace.
+2. Injects the users SSH key into their workspace from their auth profile (keycloak). This injection happens automatically when any user opens up the workspace, so no additional step is needed to allow a user to ssh into the container.
+3. Mount user and org s3 buckets
+4. Provide user sharable signed s3 link
+5. Update keycloak token at set time interval so users don't get blocked from using token enabled features after a few minutes
 
+This extension is dependent upon being run inside the Eclipse Che environment and having the keycloak user profile info.  
 
+TODO: how to retrieve info
+&nbsp;
 
 ## Requirements
 
-* JupyterLab >= 3.0
-
+* JupyterLab >= 3.4
+* s3fs-fuse
+* corresponding dependencies and s3 configurations/permissions
+* Eclipse Che stack/workspace must have 2 installers enabled to allow ssh-ing into the workspace:  
+  * org.eclipse.che.exec
+  * org.eclise.che.ssh
+  
+&nbsp;  
 ## Install
 
 To install the extension, execute:
 
 ```bash
-pip install user_workspace_management_jupyter_extension
+jupyter labextension install @maap-jupyterlab/user-workspace-management-jupyter-extension
 ```
-
+  
+&nbsp;
 ## Uninstall
 
 To remove the extension, execute:
 
 ```bash
-pip uninstall user_workspace_management_jupyter_extension
+jupyter labextension uninstall @maap-jupyterlab/user-workspace-management-jupyter-extension
 ```
-
-
-## Contributing
-
-### Development install
+  
+&nbsp;
+## Development install
 
 Note: You will need NodeJS to build the extension package.
 
@@ -64,8 +76,9 @@ By default, the `jlpm build` command generates the source maps for this extensio
 ```bash
 jupyter lab build --minimize=False
 ```
-
-### Development uninstall
+  
+&nbsp;
+## Development uninstall
 
 ```bash
 pip uninstall user_workspace_management_jupyter_extension
@@ -74,7 +87,7 @@ pip uninstall user_workspace_management_jupyter_extension
 In development mode, you will also need to remove the symlink created by `jupyter labextension develop`
 command. To find its location, you can run `jupyter labextension list` to figure out where the `labextensions`
 folder is located. Then you can remove the symlink named `user-workspace-management-jupyter-extension` within that folder.
-
-### Packaging the extension
-
-See [RELEASE](RELEASE.md)
+  
+&nbsp;
+## Questions?
+Refer to the [Q&A discussion board](https://github.com/MAAP-Project/user-workspace-management-jupyter-extension/discussions/categories/q-a).
