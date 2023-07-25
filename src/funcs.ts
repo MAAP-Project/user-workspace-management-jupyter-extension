@@ -73,6 +73,7 @@ export async function getPresignedUrl(state: IStateDB, key:string, duration:stri
     console.log(token);
     request('get', getUrl.href).then((res: RequestResult) => {
       console.log("graceal1 in the request function content in getpresignedurl");
+      console.log(res.data);
       if (res.ok) {
         console.log("graceal in the res ok if statement and printing res content");
         console.log(res.data);
