@@ -44,7 +44,7 @@ export class DropdownSelector extends Widget {
         
         // send request to get url
         getPresignedUrl(this.state, this.path, this.selected).then((url:string) => {
-            console.log("graceal1 in the get presigned url function with url");
+            console.log("graceal1 in the get presigned url function with url in selector function");
             console.log(url);
             let display = url;
             let validUrl = false;

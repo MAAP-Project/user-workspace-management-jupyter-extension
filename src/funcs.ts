@@ -43,6 +43,7 @@ export function checkUserInfo(): void {
 }
 
 export async function getPresignedUrl(state: IStateDB, key:string, duration:string): Promise<string> {
+  console.log("graceal1 in get presigned url function in funcs file");
   const profile = await getUsernameToken(state);  
 
   return new Promise<string>(async (resolve, reject) => {
@@ -51,14 +52,30 @@ export async function getPresignedUrl(state: IStateDB, key:string, duration:stri
 
     //var getUrl = new URL(PageConfig.getBaseUrl() + 'show_ssh_info/getSigneds3Url');
     var getUrl = new URL(PageConfig.getBaseUrl() + 'jupyter-server-extension/uwm/getSignedS3Url');
+    console.log("graceal1 in getpresignedurl in funcs and getUrl is");
+    console.log(getUrl);
     getUrl.searchParams.append('home_path', PageConfig.getOption('serverRoot'));
     getUrl.searchParams.append('key', key);
     getUrl.searchParams.append('username', profile.uname);
     getUrl.searchParams.append('token', token);
     getUrl.searchParams.append('proxy-ticket', profile.ticket);
     getUrl.searchParams.append('duration', duration);
+    console.log("graceal1 getUrl after appending everything is ");
+    console.log(getUrl);
+    console.log(getUrl.href);
+    console.log(profile);
+    console.log(profile.ticket);
+    console.log(profile.uname);
+    console.log(duration);
+    console.log("graceal1 key is");
+    console.log(key);
+    console.log("graceal1 token is");
+    console.log(token);
     request('get', getUrl.href).then((res: RequestResult) => {
+      console.log("graceal1 in the request function content in getpresignedurl");
       if (res.ok) {
+        console.log("graceal in the res ok if statement and printing res content");
+        console.log(res.data);
         let data:any = JSON.parse(res.data);
         console.log(data)
         if (data.status_code == 200) {
