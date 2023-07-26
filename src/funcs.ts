@@ -153,23 +153,41 @@ request('get', valuesUrl.href).then((res: RequestResult) => {
 });
 
 export async function getUsernameToken(state: IStateDB) {
+  console.log("graceal1 in the getUsernameToken function");
   let defResult = {uname: 'anonymous', ticket: ''}
-
+  console.log("graceal1 ade_server is ");
+  console.log(ade_server);
+  console.log(document.location.origin);
+  console.log("https://" + ade_server === document.location.origin);
   if ("https://" + ade_server === document.location.origin) {
+    console.log("graceal1 in the first if statement");
     let kcProfile = await getUserInfoAsyncWrapper();
+    console.log("kcProfile is");
+    console.log(kcProfile);
 
     if (kcProfile['cas:username'] === undefined) {
+      console.log("graceal1 and kcProfile at cas username is undefined so getting profile failed");
       INotification.error("Get profile failed.");
       return defResult
     } else {
+      console.log("graceal1 in else of the first if statement and cas username progile not undefined");
       return {uname: kcProfile['cas:username'], ticket: kcProfile['proxyGrantingTicket']}
     }
 
   } else {
+    console.log("graceal1 in the else of the first if statement");
     return state.fetch(profileId).then((profile) => {
+      console.log("graceal1 in the THEN of the else of the first if statement");
       let profileObj = JSON.parse(JSON.stringify(profile));
+      console.log("graceal1 after profile parse");
+      console.log(profile);
+      console.log(profileObj);
+      console.log("returning");
+      console.log({uname: profileObj.preferred_username, ticket: profileObj.proxyGrantingTicket});
       return {uname: profileObj.preferred_username, ticket: profileObj.proxyGrantingTicket}
     }).catch((error) => {
+      console.log("graceal1 in the catch of the else of the first if statement");
+      console.log(error);
       return defResult
     });
   }
