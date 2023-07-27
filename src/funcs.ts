@@ -142,12 +142,23 @@ export function activateGetPresignedUrl(
   // }
 }
 
+console.log("graceal1 outside the functions and trying to assign ade_server");
 let ade_server = '';
 var valuesUrl = new URL(PageConfig.getBaseUrl() + 'maapsec/environment');
+console.log("graceal1 printing valuesUrl");
+console.log(valuesUrl);
+console.log(valuesUrl.href);
 
 request('get', valuesUrl.href).then((res: RequestResult) => {
+  console.log("graceal1 inside the request function and is res okay: ");
+  console.log(res.ok);
+  console.log(res);
+  console.log(res.data);
   if (res.ok) {
+    console.log("graceal1 inside res okay if statement");
     let environment = JSON.parse(res.data);
+    console.log(environment);
+    console.log(environment['ade_server']);
     ade_server = environment['ade_server'];
   }
 });
