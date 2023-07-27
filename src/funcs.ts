@@ -144,7 +144,7 @@ export function activateGetPresignedUrl(
 
 console.log("graceal1 outside the functions and trying to assign ade_server");
 let ade_server = '';
-var valuesUrl = new URL(PageConfig.getBaseUrl() + 'maapsec/environment');
+var valuesUrl = new URL(PageConfig.getBaseUrl() + 'jupyter-server-extension/getConfig');
 console.log("graceal1 printing valuesUrl");
 console.log(valuesUrl);
 console.log(valuesUrl.href);
@@ -165,27 +165,6 @@ request('get', valuesUrl.href).then((res: RequestResult) => {
 });
 
 export async function getUsernameToken(state: IStateDB) {
-  console.log("graceal1 INSIDE the functions and trying to assign ade_server");
-    let ade_server = '';
-    var valuesUrl = new URL(PageConfig.getBaseUrl() + 'maapsec/environment');
-    console.log("graceal1 printing valuesUrl inside");
-    console.log(valuesUrl);
-    console.log(valuesUrl.href);
-
-    request('get', valuesUrl.href).then((res: RequestResult) => {
-      console.log("graceal1 inside the request function and is res okay: inside ");
-      console.log(res.ok);
-      console.log(res);
-      console.log(res.data);
-      if (res.ok) {
-        console.log("graceal1 inside res okay if statement inside");
-        let environment = JSON.parse(res.data);
-        console.log(environment);
-        console.log(environment['ade_server']);
-        ade_server = environment['ade_server'];
-      }
-    });
-
   console.log("graceal1 in the getUsernameToken function");
   let defResult = {uname: 'anonymous', ticket: ''}
   console.log("graceal1 ade_server is ");
