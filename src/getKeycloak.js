@@ -1,5 +1,5 @@
 
-export var getUserInfo = function(callback, retries=2) {
+export var getUserInfo = function(callback, retries=10) {
     window.parent._keycloak.loadUserInfo().success(function(profile) {
       callback(profile);
     }).error(function() {
