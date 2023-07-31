@@ -1,10 +1,17 @@
 
-export var getUserInfo = function(callback) {
+export var getUserInfo = function(callback, retries=2) {
     window.parent._keycloak.loadUserInfo().success(function(profile) {
       callback(profile);
     }).error(function() {
       console.log('Failed to load profile.');
-      return "error";
+      if (retries > 0) {
+        console.log(`Retrying loading keycloak profile... Attempts left: ${retries}`);
+        getUserInfo(callback, retries - 1);
+      } else {
+        console.log('All retries failed to load profile.');
+        callback("error");
+      }
+      //return "error";
     });
   };
   
