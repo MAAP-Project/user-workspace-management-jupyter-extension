@@ -2,7 +2,7 @@ import {Widget} from "@lumino/widgets";
 import {request, RequestResult} from "./request";
 import {PageConfig} from "@jupyterlab/coreutils";
 import {getUserInfo} from "./getKeycloak";
-import {INotification} from "jupyterlab_toastify";
+import { Notification } from "@jupyterlab/apputils";
 
 export
 class SshWidget extends Widget {
@@ -53,7 +53,7 @@ export class InjectSSH {
         let key = '';
         
         if (profile['public_ssh_keys'] === undefined) {
-            INotification.warning("User's SSH Key undefined. SSH service unavailable.");
+            Notification.warning("User's SSH Key undefined. SSH service unavailable.");
         } else {
             key = profile['public_ssh_keys'];
         }
