@@ -9,6 +9,7 @@ export var getUserInfo = function(callback, retries=10) {
         console.log("graceal1 before the wait 5 seconds function");
         await waitThreeSeconds();
         console.log("graceal1 after the wait 5 seconds function");
+        updateKeycloakToken(300);
         getUserInfo(callback, retries - 1);
       } else {
         console.log('All retries failed to load profile.');
