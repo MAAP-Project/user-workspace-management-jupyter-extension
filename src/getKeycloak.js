@@ -2,8 +2,8 @@
 export var getUserInfo = function(callback, retries=10) {
     window.parent._keycloak.loadUserInfo().success(function(profile) {
       callback(profile);
-    }).error(async function() {
-      console.log('Failed to load profile.');
+    }).error(async function(err) {
+      console.log('Failed to load profile.', err);
       if (retries > 0) {
         console.log(`Retrying loading keycloak profile... Attempts left: ${retries}`);
         console.log("graceal1 before the wait 5 seconds function");
