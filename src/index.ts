@@ -24,8 +24,6 @@ const extensionSsh: JupyterFrontEndPlugin<void> = {
 
 function activateSSH(app: JupyterFrontEnd,
   palette: ICommandPalette) {
-    console.log("graceal1 in activate ssh function");
-
       new InjectSSH();
 
       // Add an application command
