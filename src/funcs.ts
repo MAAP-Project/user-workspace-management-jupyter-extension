@@ -1,10 +1,9 @@
 import { JupyterFrontEnd } from "@jupyterlab/application";
 import { PageConfig } from "@jupyterlab/coreutils";
-import { Dialog, ICommandPalette, showDialog } from "@jupyterlab/apputils";
+import { Dialog, ICommandPalette, showDialog, Notification } from "@jupyterlab/apputils";
 import { IFileBrowserFactory } from "@jupyterlab/filebrowser";
 import { IStateDB } from '@jupyterlab/statedb';
 // import { Widget } from "@lumino/widgets";
-import { Notification } from "@jupyterlab/apputils";
 import { getToken, getUserInfo, getUserInfoAsyncWrapper } from "./getKeycloak";
 import { SshWidget, UserInfoWidget } from './widgets';
 import { DropdownSelector } from './selector';
