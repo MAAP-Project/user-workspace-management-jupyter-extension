@@ -1,10 +1,9 @@
 import { JupyterFrontEnd } from "@jupyterlab/application";
 import { PageConfig } from "@jupyterlab/coreutils";
-import { Dialog, ICommandPalette, showDialog } from "@jupyterlab/apputils";
+import { Dialog, ICommandPalette, showDialog, Notification } from "@jupyterlab/apputils";
 import { IFileBrowserFactory } from "@jupyterlab/filebrowser";
 import { IStateDB } from '@jupyterlab/statedb';
 // import { Widget } from "@lumino/widgets";
-import { INotification } from "jupyterlab_toastify";
 import { getToken, getUserInfo, getUserInfoAsyncWrapper } from "./getKeycloak";
 import { SshWidget, UserInfoWidget } from './widgets';
 import { DropdownSelector } from './selector';
@@ -25,7 +24,7 @@ export async function checkSSH() {
 export function checkUserInfo(): void {
   getUserInfo(function(profile: any) {
     if (profile['cas:username'] === undefined) {
-        INotification.error("Get user profile failed.");
+        Notification.error("Get user profile failed.");
         return;
     }
     let username = profile['cas:username']
@@ -85,11 +84,11 @@ export async function getPresignedUrl(state: IStateDB, key:string, duration:stri
         } else if (data.status_code == 404) {
           resolve(data.message);
         } else {
-          INotification.error('Failed to get presigned s3 url');
+          Notification.error('Failed to get presigned s3 url', {autoClose: 3000});
           resolve(data.url);
         }
       } else {
-        INotification.error('Failed to get presigned s3 url');
+        Notification.error('Failed to get presigned s3 url', {autoClose: 3000});
         resolve(presignedUrl);
       }
     });
@@ -179,7 +178,7 @@ export async function getUsernameToken(state: IStateDB) {
 
     if (kcProfile['cas:username'] === undefined) {
       console.log("graceal1 and kcProfile at cas username is undefined so getting profile failed");
-      INotification.error("Get profile failed.");
+      Notification.error("Get profile failed.");
       return defResult
     } else {
       console.log("graceal1 in else of the first if statement and cas username progile not undefined");

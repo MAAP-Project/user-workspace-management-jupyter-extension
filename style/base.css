@@ -3,3 +3,6 @@
 
     https://jupyterlab.readthedocs.io/en/stable/developer/css.html
 */
+.Toastify__toast-body {
+    overflow: auto;
+  }
