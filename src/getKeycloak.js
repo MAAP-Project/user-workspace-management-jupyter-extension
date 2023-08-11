@@ -5,7 +5,7 @@ export var getUserInfo = function(callback) {
     }).error(async function(err) {
       console.log('Failed to load profile.', err);
       console.log("graceal1 about to call update keycloak token");
-      updateKeycloakToken(300);
+      await updateKeycloakToken(300); // might not need await??
       console.log("graceal1 after call to update keycloak token");
       callback("error");
       //return "error";
@@ -35,7 +35,7 @@ export var getUserInfo = function(callback) {
   export var updateKeycloakToken = async function(seconds, retries=20) {
       try {
         console.log("graceal1 right before the call to updateToken");
-        var refreshed = window.parent._keycloak.updateToken(seconds);
+        var refreshed = await window.parent._keycloak.updateToken(seconds);
         console.log("graceal1 and refreshed successful and is");
         console.log(refreshed);
         return refreshed;
@@ -46,7 +46,7 @@ export var getUserInfo = function(callback) {
         if (retries > 0) {
           await waitTwoSeconds();
           console.log("graceal1 and after the 2 seconds wait, trying function again");
-          updateKeycloakToken(300, retries-1);
+          await updateKeycloakToken(300, retries-1);
         } else {
           console.log("graceal1 max number of retries, done with function");
         }
