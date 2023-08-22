@@ -1,14 +1,21 @@
 
-export var getUserInfo = function(callback) {
+export var getUserInfo = function(callback, firstTry=true) {
     window.parent._keycloak.loadUserInfo().success(function(profile) {
+      console.log("graceal1 successfully got user info, calling back with profile");
       callback(profile);
-    }).error(async function(err) {
+    }).error( async function(err) {
       console.log('Failed to load profile.', err);
-      console.log("graceal1 about to call update keycloak token");
-      await updateKeycloakToken(300); // might not need await??
-      console.log("graceal1 after call to update keycloak token");
-      callback("error");
+      if (firstTry) {
+        console.log("graceal1 about to call update keycloak token, in first try");
+        await updateKeycloakToken(300); // might not need await??
+        console.log("graceal1 after call to update keycloak token, in first try so calling getUserInfo now");
+        getUserInfo(callback, false);
+      } else {
+        callback("error");
+      }
+      
       //return "error";
+      //RETURN PROFILE FOR RETRYING IT!!
     });
   };
 
