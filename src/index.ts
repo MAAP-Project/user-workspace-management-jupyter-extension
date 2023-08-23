@@ -100,6 +100,10 @@ const extensionRefreshToken: JupyterFrontEndPlugin<void> = {
   optional: [],
   activate: () => {
 
+    // just called once at the beginning 
+    console.log("graceal1 right before the call to set time out");
+    setTimeout(() => updateKeycloakToken(300), 2000);
+    console.log("graceal1 right after call to set timeout ");
     // Refresh just under every 5 min, make token last for 5 min
     setInterval(() => updateKeycloakToken(300), 299000);
   }

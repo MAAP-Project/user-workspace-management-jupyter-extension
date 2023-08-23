@@ -53,7 +53,7 @@ export var getUserInfo = function(callback, firstTry=true) {
         if (retries > 0) {
           await waitTwoSeconds();
           console.log("graceal1 and after the 2 seconds wait, trying function again");
-          await updateKeycloakToken(300, retries-1);
+          await updateKeycloakToken(seconds, retries-1);
         } else {
           console.log("graceal1 max number of retries, done with function");
         }
