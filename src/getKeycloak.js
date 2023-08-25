@@ -5,12 +5,13 @@ export var getUserInfo = function(callback, firstTry=true) {
     window.parent._keycloak.loadUserInfo().success(function(profile) {
       callback(profile);
     }).error( async function(err) {
-      console.log('Failed to load profile.', err);
       if (firstTry) {
+        console.log('Failed to load profile, trying to update token before retrying', err);
         await updateKeycloakToken(300); // try to update token
         // tested that callback function propagates back to initiator with profile
         getUserInfo(callback, false);
       } else {
+        console.log('Failed to load profile.', err);
         callback("error");
       }
     });
