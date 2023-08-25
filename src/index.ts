@@ -53,8 +53,13 @@ const extensionUser: JupyterFrontEndPlugin<void> = {
   id: 'display_user_info',
   autoStart: true,
   requires: [ICommandPalette],
-  activate: (app: JupyterFrontEnd, palette: ICommandPalette) => {
+  activate: async (app: JupyterFrontEnd, palette: ICommandPalette)  => {
     const open_command = 'sshinfo:user';
+    console.log("graceal1 in function to call other function");
+    let test = await testFunctionWrapper();
+    console.log("graceal1 printing test after coming back from test function wrapper");
+    console.log(test);
+    console.log("graceal1 after call to test function wrapper");
 
     app.commands.addCommand(open_command, {
       label: 'Display User Info',
@@ -101,12 +106,116 @@ const extensionRefreshToken: JupyterFrontEndPlugin<void> = {
   activate: () => {
 
     // just called once at the beginning 
-    console.log("graceal1 right before the call to set time out");
     setTimeout(() => updateKeycloakToken(300), 2000);
-    console.log("graceal1 right after call to set timeout ");
     // Refresh just under every 5 min, make token last for 5 min
     setInterval(() => updateKeycloakToken(300), 299000);
   }
 };
+
+export async function testFunctionWrapper() {
+  return new Promise((resolve) => {
+    testFunction((callback: any) => {
+          resolve(callback);
+      });
+  });
+}
+
+export var testFunction = function(callback: any, firstTry=true) {
+  customFunction(firstTry).then(function(profile:any) {
+    console.log("graceal1 in the success of custom function");
+    callback(profile);
+  }).catch( async function(err: any ) {
+    console.log('graceal1 in the error of the custom function');
+    if (firstTry) {
+      console.log("graceal1 in the first try if statement");
+      console.log('graceal1 before wait 10 seconds');
+      await waitTenSeconds();
+      console.log("graceal1 after wait 10 seconds");
+      testFunction(callback, false);
+    } else{
+      console.log("graceal1 in the else of the error for test function");
+      callback("error")
+    }
+
+    /*if (firstTry) {
+      await updateKeycloakToken(300); // might not need await??
+      getUserInfo(callback, false);
+    } else {
+      callback("error");
+    }*/
+  });
+};
+
+
+function waitTenSeconds() {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(1);
+    }, 10000); // 2000 milliseconds = 2 seconds
+  });
+}
+
+/*function customFunction(promise: Promise<any>) {
+  return {
+    then(callback: any) {
+      return customFunction(promise.then(callback));
+    },
+    catch(callback: any) {
+      return customFunction(promise.catch(callback));
+    }
+  };
+}*/
+
+function customFunction(firstTry: any) {
+        
+        var promise = createPromise();
+        if (firstTry) {
+          console.log("graceal1 setting the error in the custom function");
+          promise.setError("NOT SUCCESSFUL TEST");
+        } else {
+          console.log("graceal1 setting the success in teh custom function");
+          promise.setSuccess("SUCCESSFUL TEST");
+        }
+        
+
+        return promise.promise;
+    }
+
+
+    function createPromise() {
+      let p: any = {}; // Use 'any' for more flexible assignment
+      p.promise = new Promise(function(resolve: any, reject: any) {
+        p.setSuccess = function(result: any) {
+          resolve(result);
+        };
+    
+        p.setError = function(result: any) {
+          reject(result);
+        };
+      });
+    
+      return p;
+    }
+    
+
+    /*function createPromise() {
+      // Need to create a native Promise which also preserves the
+      // interface of the custom promise type previously used by the API
+      var p = {
+          setSuccess: function(result: any) {
+              p.resolve(result);
+          },
+
+          setError: function(result: any) {
+              p.reject(result);
+          }
+      };
+      p.promise = new Promise(function(resolve: any, reject: any) {
+          p.resolve = resolve;
+          p.reject = reject;
+      });
+
+      return p;
+  }*/
 
 export default [extensionSsh, extensionUser, extensionPreSigneds3Url, extensionRefreshToken];
