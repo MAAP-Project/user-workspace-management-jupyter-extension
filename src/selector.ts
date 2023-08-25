@@ -44,8 +44,6 @@ export class DropdownSelector extends Widget {
         
         // send request to get url
         getPresignedUrl(this.state, this.path, this.selected).then((url:string) => {
-            console.log("graceal1 in the get presigned url function with url in selector function");
-            console.log(url);
             let display = url;
             let validUrl = false;
             if (url.substring(0,5) == 'https'){
@@ -55,8 +53,6 @@ export class DropdownSelector extends Widget {
             } else {
                 display = url
             }
-            console.log("graceal1 display is now");
-            console.log(display);
     
             let body = document.createElement('div');
             body.style.display = 'flex';
@@ -72,7 +68,6 @@ export class DropdownSelector extends Widget {
 
             // Copy URL to clipboard button if url created
             if (validUrl){
-                console.log('graceal1 in the valid url if statement, adding the copy button');
                 let copyBtn = document.createElement('button');
                 copyBtn.id = 's3-link-copy-button';
                 copyBtn.className = 'jupyter-button';
