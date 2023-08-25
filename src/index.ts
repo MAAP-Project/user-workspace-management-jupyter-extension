@@ -53,7 +53,7 @@ const extensionUser: JupyterFrontEndPlugin<void> = {
   id: 'display_user_info',
   autoStart: true,
   requires: [ICommandPalette],
-  activate: (app: JupyterFrontEnd, palette: ICommandPalette)  => {
+  activate: (app: JupyterFrontEnd, palette: ICommandPalette) => {
     const open_command = 'sshinfo:user';
 
     app.commands.addCommand(open_command, {

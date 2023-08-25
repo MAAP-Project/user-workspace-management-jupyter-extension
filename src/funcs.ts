@@ -59,6 +59,7 @@ export async function getPresignedUrl(state: IStateDB, key:string, duration:stri
     request('get', getUrl.href).then((res: RequestResult) => {
       if (res.ok) {
         let data:any = JSON.parse(res.data);
+        console.log(data)
         if (data.status_code == 200) {
           presignedUrl = data.url;
           resolve(presignedUrl);
@@ -134,6 +135,7 @@ request('get', valuesUrl.href).then((res: RequestResult) => {
 
 export async function getUsernameToken(state: IStateDB) {
   let defResult = {uname: 'anonymous', ticket: ''}
+
   if ("https://" + ade_server === document.location.origin) {
     let kcProfile = await getUserInfoAsyncWrapper();
 

@@ -5,7 +5,7 @@ export var getUserInfo = function(callback, firstTry=true) {
     }).error( async function(err) {
       console.log('Failed to load profile.', err);
       if (firstTry) {
-        await updateKeycloakToken(300); // might not need await??
+        await updateKeycloakToken(300); // try to update token
         // tested that callback function propagates back to initiator with profile
         getUserInfo(callback, false);
       } else {
@@ -36,8 +36,7 @@ export var getUserInfo = function(callback, firstTry=true) {
   
   export var updateKeycloakToken = async function(seconds, retries=20) {
       try {
-        var refreshed = await window.parent._keycloak.updateToken(seconds);
-        return refreshed;
+        return await window.parent._keycloak.updateToken(seconds);
       } catch (error) {
         if (retries > 0) {
           await waitTwoSeconds();
