@@ -1,4 +1,6 @@
-
+/*
+* Race condition was causing error, so if loadUserInfo fails, make sure that keycloak token is updated 
+*/
 export var getUserInfo = function(callback, firstTry=true) {
     window.parent._keycloak.loadUserInfo().success(function(profile) {
       callback(profile);
