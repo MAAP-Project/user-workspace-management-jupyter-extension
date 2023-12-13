@@ -11,7 +11,7 @@ class SshWidget extends Widget {
     body.style.display = 'flex';
     body.style.flexDirection = 'column';
 
-    request('get', PageConfig.getBaseUrl() + "jupyter-server-extension/uwm/getSSHInfo").then((res: RequestResult) => {
+    request('get', PageConfig.getBaseUrl() + "jupyter-server-extension/uwm/getProfileInfo").then((res: RequestResult) => {
       if(res.ok){
         let json_results:any = res.json();
         let ip = json_results['ip'];
