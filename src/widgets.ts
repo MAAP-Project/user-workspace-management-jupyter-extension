@@ -2,16 +2,14 @@ import {Widget} from "@lumino/widgets";
 import {request, RequestResult} from "./request";
 import {PageConfig} from "@jupyterlab/coreutils";
 import {getUserInfo} from "./getKeycloak";
-import { Notification } from "@jupyterlab/apputils";
 
-export
-class SshWidget extends Widget {
+export class SshWidget extends Widget {
   constructor() {
     let body = document.createElement('div');
     body.style.display = 'flex';
     body.style.flexDirection = 'column';
 
-    request('get', PageConfig.getBaseUrl() + "jupyter-server-extension/uwm/getProfileInfo").then((res: RequestResult) => {
+    request('get', PageConfig.getBaseUrl() + "jupyter-server-extension/uwm/getSSHInfo").then((res: RequestResult) => {
       if(res.ok){
         let json_results:any = res.json();
         let ip = json_results['ip'];
@@ -26,8 +24,7 @@ class SshWidget extends Widget {
   }
 }
 
-export
-class UserInfoWidget extends Widget {
+export class UserInfoWidget extends Widget {
   constructor(username:string,email:string,org:string) {
     let body = document.createElement('div');
     body.style.display = 'flex';
@@ -48,30 +45,11 @@ class UserInfoWidget extends Widget {
 export class InjectSSH {
   constructor() {
 
-    getUserInfo(function(profile: any) {
-
-        let key = '';
-        
-        if (profile['public_ssh_keys'] === undefined) {
-            Notification.warning("User's SSH Key undefined. SSH service unavailable.");
-        } else {
-            key = profile['public_ssh_keys'];
-        }
-
-        let getUrl = new URL(PageConfig.getBaseUrl() + "jupyter-server-extension/uwm/injectPublicKey");
-        getUrl.searchParams.append("key", key);
-
-        if (profile['proxyGrantingTicket'] !== undefined) {
-            getUrl.searchParams.append("proxyGrantingTicket", profile['proxyGrantingTicket']);
-        }
-
-        // Make call to back end
-        let xhr = new XMLHttpRequest();
-        xhr.onload = function() {
-            console.log("Checked for/injected user's public key and PGT");
-        };
-        xhr.open("GET", getUrl.href, true);
-        xhr.send(null);
+    request('get', PageConfig.getBaseUrl() + "jupyter-server-extension/uwm/injectPublicKey").then((res: RequestResult) => {
+      if(res.ok){
+        let json_results:any = res.json();
+        console.log("Inject results: \n", json_results)
+      }
     });
   }
 }
