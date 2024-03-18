@@ -1,5 +1,5 @@
 {
   "packageManager": "python",
-  "packageName": "user_workspace_management_jupyter_extension",
+  "packageName": "maap_user_workspace_management_jupyter_extension",
   "uninstallInstructions": "Use your Python package manager (pip, conda, etc.) to uninstall the package user_workspace_management_jupyter_extension"
 }
