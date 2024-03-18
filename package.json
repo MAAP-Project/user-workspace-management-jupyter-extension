@@ -1,5 +1,5 @@
 {
-  "name": "user-workspace-management-jupyter-extension",
+  "name": "maap-user-workspace-management-jupyter-extension",
   "version": "0.1.0",
   "description": "Manage user resources.",
   "keywords": [
@@ -37,7 +37,7 @@
     "clean": "jlpm clean:lib",
     "clean:lib": "rimraf lib tsconfig.tsbuildinfo",
     "clean:lintcache": "rimraf .eslintcache .stylelintcache",
-    "clean:labextension": "rimraf user_workspace_management_jupyter_extension/labextension",
+    "clean:labextension": "rimraf maap_user_workspace_management_jupyter_extension/labextension",
     "clean:all": "jlpm clean:lib && jlpm clean:labextension && jlpm clean:lintcache",
     "eslint": "jlpm eslint:check --fix",
     "eslint:check": "eslint . --cache --ext .ts,.tsx",
@@ -86,7 +86,7 @@
   },
   "jupyterlab": {
     "extension": true,
-    "outputDir": "user_workspace_management_jupyter_extension/labextension"
+    "outputDir": "maap_user_workspace_management_jupyter_extension/labextension"
   },
   "jupyter-releaser": {
     "hooks": {

@@ -28,7 +28,7 @@ TODO: how to retrieve info
 To install the extension, execute:
 
 ```bash
-jupyter labextension install @maap-jupyterlab/user-workspace-management-jupyter-extension
+pip install maap-user-workspace-management-jupyter-extension
 ```
   
 &nbsp;
@@ -37,7 +37,7 @@ jupyter labextension install @maap-jupyterlab/user-workspace-management-jupyter-
 To remove the extension, execute:
 
 ```bash
-jupyter labextension uninstall @maap-jupyterlab/user-workspace-management-jupyter-extension
+pip uninstall maap-user-workspace-management-jupyter-extension
 ```
   
 &nbsp;
@@ -81,12 +81,12 @@ jupyter lab build --minimize=False
 ## Development uninstall
 
 ```bash
-pip uninstall user_workspace_management_jupyter_extension
+pip uninstall maap_user_workspace_management_jupyter_extension
 ```
 
 In development mode, you will also need to remove the symlink created by `jupyter labextension develop`
 command. To find its location, you can run `jupyter labextension list` to figure out where the `labextensions`
-folder is located. Then you can remove the symlink named `user-workspace-management-jupyter-extension` within that folder.
+folder is located. Then you can remove the symlink named `maap-user-workspace-management-jupyter-extension` within that folder.
   
 &nbsp;
 ## Questions?
