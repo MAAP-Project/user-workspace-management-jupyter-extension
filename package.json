@@ -1,6 +1,6 @@
 {
-  "name": "@maap-jupyterlab/user-workspace-management-jupyter-extension",
-  "version": "0.0.5",
+  "name": "user-workspace-management-jupyter-extension",
+  "version": "0.1.0",
   "description": "Manage user resources.",
   "keywords": [
     "jupyter",
