@@ -3,7 +3,6 @@ import { JupyterFrontEnd, JupyterFrontEndPlugin } from '@jupyterlab/application'
 import { IFileBrowserFactory } from '@jupyterlab/filebrowser';
 import { ILauncher } from '@jupyterlab/launcher';
 import { IStateDB } from '@jupyterlab/statedb';
-
 import { checkUserInfo, checkSSH, activateGetPresignedUrl } from './funcs'
 import { InjectSSH } from './widgets'
 import { updateKeycloakToken } from "./getKeycloak";

@@ -3,7 +3,6 @@ import { PageConfig } from "@jupyterlab/coreutils";
 import { Dialog, ICommandPalette, showDialog, Notification } from "@jupyterlab/apputils";
 import { IFileBrowserFactory } from "@jupyterlab/filebrowser";
 import { IStateDB } from '@jupyterlab/statedb';
-// import { Widget } from "@lumino/widgets";
 import { getToken, getUserInfo, getUserInfoAsyncWrapper } from "./getKeycloak";
 import { SshWidget, UserInfoWidget } from './widgets';
 import { DropdownSelector } from './selector';
@@ -101,7 +100,7 @@ export function activateGetPresignedUrl(
         return;
       }
 
-      let path = item.path;
+      let path = item.value;
       let expirationOptions = ['86400 (24 hours)','604800 (1 week)','2592000 (30 days)'];
       let dropdownSelector = new DropdownSelector(expirationOptions, '86400 (24 hours)', state, path);
       popupResult(dropdownSelector, 'Select an Expiration Duration');

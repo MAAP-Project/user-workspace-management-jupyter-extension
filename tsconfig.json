@@ -7,14 +7,10 @@
     "esModuleInterop": true,
     "incremental": true,
     "jsx": "react",
-    // "lib": [
-    //   "ES2018",
-    //   "DOM"
-    // ],
     "module": "esnext",
     "moduleResolution": "node",
     "noEmitOnError": true,
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "noUnusedLocals": true,
     "preserveWatchOutput": true,
     "resolveJsonModule": true,
@@ -23,7 +19,7 @@
     "skipLibCheck": true,
     "strict": true,
     "strictNullChecks": true,
-    "target": "es2020",
+    "target": "ES2022",
     "types": []
   },
   "include": ["src/*"]
