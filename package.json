@@ -1,6 +1,6 @@
 {
   "name": "maap-user-workspace-management-jupyter-extension",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Manage user resources.",
   "keywords": [
     "jupyter",
@@ -12,7 +12,7 @@
   "bugs": {
     "url": "https://github.com/MAAP-Project/user-workspace-management-jupyter-extension/issues"
   },
-  "license": "Apache 2.0",
+  "license": "Apache-2.0",
   "author": {
     "name": "Marjorie Lucas",
     "email": "marjorie.j.lucas@jpl.nasa.gov"
@@ -39,6 +39,9 @@
     "clean:labextension": "rimraf maap_user_workspace_management_jupyter_extension/labextension",
     "clean:all": "jlpm clean:lib && jlpm clean:labextension",
     "install:extension": "jlpm build",
+    "start": "jupyter lab --config tests/jupyter_server_test_config.py",
+    "test": "jlpm playwright test",
+    "test:ui": "jlpm playwright test --ui",
     "watch": "run-p watch:src watch:labextension",
     "watch:src": "tsc -w",
     "watch:labextension": "jupyter labextension watch ."
@@ -47,7 +50,9 @@
     "@jupyterlab/application": "^4.1.8",
     "@jupyterlab/apputils": "^4.2.8",
     "@jupyterlab/filebrowser": "^4.1.8",
-    "@jupyterlab/launcher": "^4.1.8"
+    "@jupyterlab/galata": "^5.2.0",
+    "@jupyterlab/launcher": "^4.1.8",
+    "@playwright/test": "^1.44.0"
   },
   "devDependencies": {
     "@jupyterlab/builder": "^4.1.8",

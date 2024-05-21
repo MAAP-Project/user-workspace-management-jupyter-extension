@@ -64,7 +64,7 @@ const extensionUser: JupyterFrontEndPlugin<void> = {
     });
 
     palette.addItem({command:open_command,category:'User'});
-    console.log('User Workspace Management extension activated!');
+    console.log('JupyterLab MAAP User Workspace Management extension is activated!');
   }
 };
 
