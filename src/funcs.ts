@@ -98,7 +98,7 @@ export function activateGetPresignedUrl(
         return;
       }
 
-      let path = item.path;
+      let path = item.value;
       let expirationOptions = ['86400 (24 hours)','604800 (1 week)','2592000 (30 days)'];
       let dropdownSelector = new DropdownSelector(expirationOptions, '86400 (24 hours)', state, path);
       popupResult(dropdownSelector, 'Select an Expiration Duration');
