@@ -46,17 +46,15 @@ export async function getPresignedUrl(state: IStateDB, key:string, duration:stri
 
   return new Promise<string>(async (resolve, reject) => {
     let presignedUrl = '';
-    let token = getToken();
-
-    //var getUrl = new URL(PageConfig.getBaseUrl() + 'show_ssh_info/getSigneds3Url');
-    var getUrl = new URL(PageConfig.getBaseUrl() + 'jupyter-server-extension/uwm/getSignedS3Url');
-    getUrl.searchParams.append('home_path', PageConfig.getOption('serverRoot'));
-    getUrl.searchParams.append('key', key);
-    getUrl.searchParams.append('username', profile.uname);
-    getUrl.searchParams.append('token', token);
-    getUrl.searchParams.append('proxy-ticket', profile.ticket);
-    getUrl.searchParams.append('duration', duration);
-    request('get', getUrl.href).then((res: RequestResult) => {
+    
+    var relUrl = window.location.pathname.substring(0, window.location.pathname.length - 4) + "/jupyter-server-extension/uwm/getSignedS3Url";
+    relUrl += "?home_path=" + i.PageConfig.getOption("serverRoot");
+    relUrl += "&key=" + t.path;
+    relUrl += "&username=" + a.uname;
+    relUrl += "&proxy-ticket=" + a.ticket;
+    relUrl += "&duration=" + n;
+    
+    request('get', relUrl).then((res: RequestResult) => {
       if (res.ok) {
         let data:any = JSON.parse(res.data);
         console.log(data)
