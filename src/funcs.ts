@@ -45,10 +45,13 @@ export async function getPresignedUrl(state: IStateDB, key:string, duration:stri
 
   return new Promise<string>(async (resolve, reject) => {
     let presignedUrl = '';
-    
-    var relUrl = window.location.pathname.substring(0, window.location.pathname.length - 4) + "/jupyter-server-extension/uwm/getSignedS3Url";
+
+    console.log("The key is: ", key)
+
+    var relUrl = "/" + window.location.pathname.split("/")[1] + "/" + window.location.pathname.split("/")[2] + "/jupyter-server-extension/uwm/getSignedS3Url";
+       
     relUrl += "?home_path=" + PageConfig.getOption("serverRoot");
-    relUrl += "&key=" + key;
+    relUrl += "&key=" + key["path"];
     relUrl += "&username=" + profile.uname;
     relUrl += "&proxy-ticket=" + profile.ticket;
     relUrl += "&duration=" + duration;
