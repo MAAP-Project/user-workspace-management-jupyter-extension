@@ -3,8 +3,7 @@ import { PageConfig } from "@jupyterlab/coreutils";
 import { Dialog, ICommandPalette, showDialog, Notification } from "@jupyterlab/apputils";
 import { IFileBrowserFactory } from "@jupyterlab/filebrowser";
 import { IStateDB } from '@jupyterlab/statedb';
-// import { Widget } from "@lumino/widgets";
-import { getToken, getUserInfo, getUserInfoAsyncWrapper } from "./getKeycloak";
+import { getUserInfo, getUserInfoAsyncWrapper } from "./getKeycloak";
 import { SshWidget, UserInfoWidget } from './widgets';
 import { DropdownSelector } from './selector';
 import { popupResult } from './dialogs';
@@ -48,11 +47,11 @@ export async function getPresignedUrl(state: IStateDB, key:string, duration:stri
     let presignedUrl = '';
     
     var relUrl = window.location.pathname.substring(0, window.location.pathname.length - 4) + "/jupyter-server-extension/uwm/getSignedS3Url";
-    relUrl += "?home_path=" + i.PageConfig.getOption("serverRoot");
-    relUrl += "&key=" + t.path;
-    relUrl += "&username=" + a.uname;
-    relUrl += "&proxy-ticket=" + a.ticket;
-    relUrl += "&duration=" + n;
+    relUrl += "?home_path=" + PageConfig.getOption("serverRoot");
+    relUrl += "&key=" + key;
+    relUrl += "&username=" + profile.uname;
+    relUrl += "&proxy-ticket=" + profile.ticket;
+    relUrl += "&duration=" + duration;
     
     request('get', relUrl).then((res: RequestResult) => {
       if (res.ok) {
