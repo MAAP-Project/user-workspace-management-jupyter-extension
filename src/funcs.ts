@@ -3,7 +3,6 @@ import { PageConfig } from "@jupyterlab/coreutils";
 import { Dialog, ICommandPalette, showDialog, Notification } from "@jupyterlab/apputils";
 import { IFileBrowserFactory } from "@jupyterlab/filebrowser";
 import { IStateDB } from '@jupyterlab/statedb';
-// import { Widget } from "@lumino/widgets";
 import { getToken, getUserInfo, getUserInfoAsyncWrapper } from "./getKeycloak";
 import { SshWidget, UserInfoWidget } from './widgets';
 import { DropdownSelector } from './selector';
@@ -48,10 +47,11 @@ export async function getPresignedUrl(state: IStateDB, key:string, duration:stri
     let presignedUrl = '';
     let token = getToken();
 
+    console.log("The key is: ", key)
     //var getUrl = new URL(PageConfig.getBaseUrl() + 'show_ssh_info/getSigneds3Url');
     var getUrl = new URL(PageConfig.getBaseUrl() + 'jupyter-server-extension/uwm/getSignedS3Url');
     getUrl.searchParams.append('home_path', PageConfig.getOption('serverRoot'));
-    getUrl.searchParams.append('key', key);
+    getUrl.searchParams.append('key', key["path"]);
     getUrl.searchParams.append('username', profile.uname);
     getUrl.searchParams.append('token', token);
     getUrl.searchParams.append('proxy-ticket', profile.ticket);
@@ -101,7 +101,7 @@ export function activateGetPresignedUrl(
         return;
       }
 
-      let path = item.path;
+      let path = item.value;
       let expirationOptions = ['86400 (24 hours)','604800 (1 week)','2592000 (30 days)'];
       let dropdownSelector = new DropdownSelector(expirationOptions, '86400 (24 hours)', state, path);
       popupResult(dropdownSelector, 'Select an Expiration Duration');
