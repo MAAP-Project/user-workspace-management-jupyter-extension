@@ -3,7 +3,6 @@ import { JupyterFrontEnd, JupyterFrontEndPlugin } from '@jupyterlab/application'
 import { IFileBrowserFactory } from '@jupyterlab/filebrowser';
 import { ILauncher } from '@jupyterlab/launcher';
 import { IStateDB } from '@jupyterlab/statedb';
-
 import { checkUserInfo, checkSSH, activateGetPresignedUrl } from './funcs'
 import { InjectSSH } from './widgets'
 import { updateKeycloakToken } from "./getKeycloak";
@@ -65,7 +64,7 @@ const extensionUser: JupyterFrontEndPlugin<void> = {
     });
 
     palette.addItem({command:open_command,category:'User'});
-    console.log('User Workspace Management extension activated!');
+    console.log('JupyterLab MAAP User Workspace Management extension is activated!');
   }
 };
 
