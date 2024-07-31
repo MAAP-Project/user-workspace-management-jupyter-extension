@@ -10,19 +10,22 @@ This extension offers general workspace management features. These include:
 
 This extension is dependent upon being run inside the Eclipse Che environment and having the keycloak user profile info.  
 
-TODO: how to retrieve info
-&nbsp;
-
 ## Requirements
 
-* JupyterLab >= 3.4
+| Package | Version |
+|---------|---------|
+| JupyterLab | v4.1.6 |
+| NodeJS | v18.20.0 |
+| Python | >= v3.8 |
+
 * s3fs-fuse
 * corresponding dependencies and s3 configurations/permissions
 * Eclipse Che stack/workspace must have 2 installers enabled to allow ssh-ing into the workspace:  
   * org.eclipse.che.exec
   * org.eclise.che.ssh
-  
-&nbsp;  
+
+These are the recommended versions. Others may be suitable, but are not actively supported.
+    
 ## Install
 
 To install the extension, execute:
@@ -31,7 +34,6 @@ To install the extension, execute:
 pip install maap-user-workspace-management-jupyter-extension
 ```
   
-&nbsp;
 ## Uninstall
 
 To remove the extension, execute:
@@ -40,7 +42,6 @@ To remove the extension, execute:
 pip uninstall maap-user-workspace-management-jupyter-extension
 ```
   
-&nbsp;
 ## Development install
 
 Note: You will need NodeJS to build the extension package.
@@ -52,6 +53,8 @@ The `jlpm` command is JupyterLab's pinned version of
 ```bash
 # Clone the repo to your local environment
 # Change directory to the user_workspace_management_jupyter_extension directory
+# Install dependencies
+jlpm install
 # Install package in development mode
 pip install -e .
 # Link your development version of the extension with JupyterLab
@@ -77,7 +80,6 @@ By default, the `jlpm build` command generates the source maps for this extensio
 jupyter lab build --minimize=False
 ```
   
-&nbsp;
 ## Development uninstall
 
 ```bash
@@ -87,7 +89,24 @@ pip uninstall maap_user_workspace_management_jupyter_extension
 In development mode, you will also need to remove the symlink created by `jupyter labextension develop`
 command. To find its location, you can run `jupyter labextension list` to figure out where the `labextensions`
 folder is located. Then you can remove the symlink named `maap-user-workspace-management-jupyter-extension` within that folder.
+
+## Testing
+
+Playwright is the testing framework used. When testing locally, use the following command to start the jupyter server and run the tests:
+```
+jlpm run start & jlpm run test
+```
+
+To test using the interactive UI, run the following instead:
+
+```
+jlpm run start & jlpm run test --ui
+```
   
-&nbsp;
-## Questions?
-Refer to the [Q&A discussion board](https://github.com/MAAP-Project/user-workspace-management-jupyter-extension/discussions/categories/q-a).
+## Release
+
+See [RELEASE](RELEASE.md)
+
+## Contribute
+
+See [CONTRIBUTING](CONTRIBUTING.md)
