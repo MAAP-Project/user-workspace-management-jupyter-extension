@@ -47,13 +47,14 @@ class UserInfoWidget extends Widget {
 
 export class InjectSSH {
   constructor() {
+
     getUserInfo(function(profile: any) {
       var getUrl = new URL(PageConfig.getBaseUrl() + 'jupyter-server-extension/uwm/getAccountInfo');
       getUrl.searchParams.append("proxyGrantingTicket", profile['proxyGrantingTicket']);
       var xhr = new XMLHttpRequest();
       xhr.onload = function() {
         if (xhr.status == 200) {
-            let key;
+            let key = '';
 
             try {
               let response = JSON.parse(xhr.response);
