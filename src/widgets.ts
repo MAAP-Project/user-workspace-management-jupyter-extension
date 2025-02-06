@@ -47,22 +47,16 @@ class UserInfoWidget extends Widget {
 
 export class InjectSSH {
   constructor() {
-    console.log("graceal1 in constructor of Inject SSH");
     getUserInfo(function(profile: any) {
-      console.log("graceal1 in getuserinfo callback");
       var getUrl = new URL(PageConfig.getBaseUrl() + 'jupyter-server-extension/uwm/getAccountInfo');
+      getUrl.searchParams.append("proxyGrantingTicket", profile['proxyGrantingTicket']);
       var xhr = new XMLHttpRequest();
       xhr.onload = function() {
         if (xhr.status == 200) {
             let key;
 
             try {
-              console.log("graceal1 in try with response being");
-              console.log(xhr.response);
               let response = JSON.parse(xhr.response);
-              console.log(response);
-              console.log(response["profile"]);
-              console.log(response["public_ssh_key"]);
               key = response["profile"]["public_ssh_key"];
             } catch (error) {
               console.log("Bad response from jupyter-server-extension/uwm/getAccountInfo");
@@ -74,9 +68,6 @@ export class InjectSSH {
               let getUrlInjectPublicKey = new URL(PageConfig.getBaseUrl() + "jupyter-server-extension/uwm/injectPublicKey");
               getUrlInjectPublicKey.searchParams.append("key", key);
               getUrlInjectPublicKey.searchParams.append("proxyGrantingTicket", profile['proxyGrantingTicket']);
-
-              console.log("graceal1 PGT token from profile is ");
-              console.log(profile['proxyGrantingTicket']);
 
               let xhrInject = new XMLHttpRequest();
               xhrInject.onload = function() {
