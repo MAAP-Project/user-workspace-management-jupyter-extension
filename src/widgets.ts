@@ -78,7 +78,6 @@ export class InjectSSH {
             }
 
             if (profile != undefined) {
-              console.log("graceal1 profile was not undefined so making call to injectPGT")
               let getUrlInjectPGT = new URL(PageConfig.getBaseUrl() + "jupyter-server-extension/uwm/injectPGT");
               getUrlInjectPGT.searchParams.append("proxyGrantingTicket", profile['proxyGrantingTicket']);
 
@@ -88,6 +87,8 @@ export class InjectSSH {
               };
               xhrInjectPGT.open("GET", getUrlInjectPGT.href, true);
               xhrInjectPGT.send(null);
+            } else {
+              Notification.warning("Profile not defined so PGT token not set. Some services may be unavailable.");
             }
         }
         else {
