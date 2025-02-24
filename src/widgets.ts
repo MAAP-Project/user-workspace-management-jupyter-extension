@@ -68,14 +68,26 @@ export class InjectSSH {
             } else {
               let getUrlInjectPublicKey = new URL(PageConfig.getBaseUrl() + "jupyter-server-extension/uwm/injectPublicKey");
               getUrlInjectPublicKey.searchParams.append("key", key);
-              getUrlInjectPublicKey.searchParams.append("proxyGrantingTicket", profile['proxyGrantingTicket']);
-
-              let xhrInject = new XMLHttpRequest();
-              xhrInject.onload = function() {
-                  console.log("Checked for/injected user's public key and PGT");
+              
+              let xhrInjectPublicKey = new XMLHttpRequest();
+              xhrInjectPublicKey.onload = function() {
+                  console.log("Checked for/injected user's public key");
               };
-              xhrInject.open("GET", getUrlInjectPublicKey.href, true);
-              xhrInject.send(null);
+              xhrInjectPublicKey.open("GET", getUrlInjectPublicKey.href, true);
+              xhrInjectPublicKey.send(null);
+            }
+
+            if (profile != undefined) {
+              console.log("graceal1 profile was not undefined so making call to injectPGT")
+              let getUrlInjectPGT = new URL(PageConfig.getBaseUrl() + "jupyter-server-extension/uwm/injectPGT");
+              getUrlInjectPGT.searchParams.append("proxyGrantingTicket", profile['proxyGrantingTicket']);
+
+              let xhrInjectPGT = new XMLHttpRequest();
+              xhrInjectPGT.onload = function() {
+                  console.log("Checked for/injected user's PGT");
+              };
+              xhrInjectPGT.open("GET", getUrlInjectPGT.href, true);
+              xhrInjectPGT.send(null);
             }
         }
         else {
