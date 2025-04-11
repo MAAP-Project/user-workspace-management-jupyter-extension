@@ -1,0 +1,9 @@
+name: "Step 2: Publish Release"
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    steps:
+      - name: echo
+        run: echo "Hello World!"
