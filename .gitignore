@@ -43,3 +43,10 @@ node_modules/
 /playwright/.cache/
 
 .idea
+
+labextension.list
+junit.xml
+ui-tests/test-results
+ui-tests/playwright-report
+coverage/
+ui-tests/yarn.lock

@@ -1,10 +1,15 @@
 name: CI
 
 on:
-  workflow_dispatch:
+  push:
+    branches: [ develop, release/**, main, master, feature/**, issue/**, issues/**, dependabot/** ]
+
+env:
+  NODE_VERSION: "18.x"
+  PYTHON_VERSION: "3.11"
+  JUPYTERLAB_VERSION: "~=4.2.5"
 
 jobs:
-  build:
-    steps:
-      - name: echo
-        run: echo "Hello World!"
+  call-build:
+    uses: MAAP-Project/algorithms-jupyter-extension/.github/workflows/build.yml@develop
+    secrets: inherit
