@@ -51,8 +51,7 @@
     "@jupyterlab/apputils": "^4.2.5",
     "@jupyterlab/filebrowser": "^4.2.5",
     "@jupyterlab/launcher": "^4.2.5",
-    "@jupyterlab/notebook": "^4.2.5",
-    "@playwright/test": "^1.44.0"
+    "@jupyterlab/notebook": "^4.2.5"
   },
   "devDependencies": {
     "@jupyterlab/builder": "^4.2.5",
