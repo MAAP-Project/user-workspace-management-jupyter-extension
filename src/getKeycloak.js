@@ -1,3 +1,5 @@
+import {PageConfig} from "@jupyterlab/coreutils";
+
 export var getUserInfo = function(callback, firstTry=true) {
     var requestUrl = new URL(PageConfig.getBaseUrl() + 'jupyter-server-extension/uwm/getAccountInfoFromPGTENV');
     var xhr = new XMLHttpRequest();
