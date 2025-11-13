@@ -1,29 +1,27 @@
-/*
-* Race condition was causing error, so if loadUserInfo fails, make sure that keycloak token is updated 
-*/
 export var getUserInfo = function(callback, firstTry=true) {
-    window.parent._keycloak.loadUserInfo().success(function(profile) {
-      callback(profile);
-    }).error( async function(err) {
-      if (firstTry) {
-        console.log('Failed to load profile, trying to update token before retrying', err);
-        await updateKeycloakToken(300); // try to update token
-        // tested that callback function propagates back to initiator with profile
-        getUserInfo(callback, false);
+    var requestUrl = new URL(PageConfig.getBaseUrl() + 'jupyter-server-extension/uwm/getAccountInfoFromPGTENV');
+    var xhr = new XMLHttpRequest();
+    xhr.onload = function() {
+      if (xhr.status == 200) {
+        try {
+          let response = JSON.parse(xhr.response);
+          console.log("graceal1 in getUserInfo with response for callback being");
+          console.log(response)
+          callback(response)
+        } catch (error) {
+          console.log("Incorrectly formatted response from jupyter-server-extension/uwm/getAccountInfoFromPGTENV");
+        }
       } else {
-        console.log('Failed to load profile.', err);
-        callback("error");
+        console.log("Bad response from jupyter-server-extension/uwm/getAccountInfoFromPGTENV");
       }
-    });
-  };
+    };
+    xhr.onerror = function() {
+      console.log("Error making call to account profile. Status is " + xhr.status + ". Was your MAAP PGT token properly set?");
+    };
 
-  function waitTwoSeconds() { 
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve();
-      }, 2000); // 2000 milliseconds = 2 seconds
-    });
-  }
+    xhr.open("GET", requestUrl.href, true);
+    xhr.send(null);
+}
   
   export async function getUserInfoAsyncWrapper() {
     return new Promise((resolve) => {
@@ -32,18 +30,3 @@ export var getUserInfo = function(callback, firstTry=true) {
         });
     });
   }
-  
-  export var getToken = function() {
-      return window.parent._keycloak.idToken;
-  };
-  
-  export var updateKeycloakToken = async function(seconds, retries=20) {
-      try {
-        return await window.parent._keycloak.updateToken(seconds);
-      } catch (error) {
-        if (retries > 0) {
-          await waitTwoSeconds();
-          await updateKeycloakToken(seconds, retries-1);
-        } 
-      }
-  };

@@ -5,7 +5,6 @@ import { ILauncher } from '@jupyterlab/launcher';
 import { IStateDB } from '@jupyterlab/statedb';
 import { checkUserInfo, checkSSH, activateGetPresignedUrl } from './funcs'
 import { InjectSSH } from './widgets'
-import { updateKeycloakToken } from "./getKeycloak";
 import '../style/index.css';
 
 ///////////////////////////////////////////////////////////////
@@ -81,29 +80,4 @@ const extensionPreSigneds3Url: JupyterFrontEndPlugin<void> = {
   activate: activateGetPresignedUrl
 };
 
-
-
-///////////////////////////////////////////////////////////////
-//
-// Refresh token extension
-//
-// This plugin refreshes the users keycloak token on set time interval
-// to extend the time a user can functionally use a workspace before
-// having to manually refresh the page
-//
-///////////////////////////////////////////////////////////////
-const extensionRefreshToken: JupyterFrontEndPlugin<void> = {
-  id: 'refresh_token',
-  autoStart: true,
-  requires: [],
-  optional: [],
-  activate: () => {
-
-    // just called once at the beginning 
-    setTimeout(() => updateKeycloakToken(300), 2000);
-    // Refresh just under every 5 min, make token last for 5 min
-    setInterval(() => updateKeycloakToken(300), 299000);
-  }
-};
-
-export default [extensionSsh, extensionUser, extensionPreSigneds3Url, extensionRefreshToken];
+export default [extensionSsh, extensionUser, extensionPreSigneds3Url];

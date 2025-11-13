@@ -22,13 +22,13 @@ export async function checkSSH() {
 
 export function checkUserInfo(): void {
   getUserInfo(function(profile: any) {
-    if (profile['cas:username'] === undefined) {
+    if (profile['username'] === undefined) {
         Notification.error("Get user profile failed.");
         return;
     }
-    let username = profile['cas:username']
-    let email = profile['cas:email']
-    let org = profile['organization']
+    let username = profile['username']
+    let email = profile['email']
+    let org = profile['organizations']
 
     // popup info
     showDialog({
@@ -137,19 +137,19 @@ export async function getUsernameToken(state: IStateDB) {
   let defResult = {uname: 'anonymous', ticket: ''}
 
   if ("https://" + ade_server === document.location.origin) {
-    let kcProfile = await getUserInfoAsyncWrapper();
+    let profile = await getUserInfoAsyncWrapper();
 
-    if (kcProfile['cas:username'] === undefined) {
+    if (profile['username'] === undefined) {
       Notification.error("Get profile failed.");
       return defResult
     } else {
-      return {uname: kcProfile['cas:username'], ticket: kcProfile['proxyGrantingTicket']}
+      return {uname: profile['username'], ticket: profile['session_key']}
     }
 
   } else {
     return state.fetch(profileId).then((profile) => {
       let profileObj = JSON.parse(JSON.stringify(profile));
-      return {uname: profileObj.preferred_username, ticket: profileObj.proxyGrantingTicket}
+      return {uname: profileObj.username, ticket: profileObj.session_key}
     }).catch((error) => {
       return defResult
     });
