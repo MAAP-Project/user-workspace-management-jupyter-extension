@@ -9,6 +9,9 @@ export var getUserInfo = function(callback, firstTry=true) {
           let response = JSON.parse(xhr.response);
           console.log("graceal1 in getUserInfo with response for callback being");
           console.log(response)
+          if (response) {
+            response = response["profile"]
+          }
           callback(response)
         } catch (error) {
           console.log("Incorrectly formatted response from jupyter-server-extension/uwm/getAccountInfoFromPGTENV");
