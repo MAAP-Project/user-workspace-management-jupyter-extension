@@ -22,6 +22,7 @@ export async function checkSSH() {
 
 export function checkUserInfo(): void {
   getUserInfo(function(profile: any) {
+    console.log("graceal1 in checkUserInfo top");
     if (profile['username'] === undefined) {
         Notification.error("Get user profile failed.");
         return;

@@ -53,6 +53,8 @@ export class InjectSSH {
     getUserInfo(function(profile: any) {
       console.log("graceal1 in get user info function callback in injectSSH")
       console.log(profile);
+      console.log(profile["profile"]);
+      console.log(profile.public_ssh_key);
       console.log(profile["public_ssh_key"]);
       console.log(profile['session_key']);
       if (profile == undefined) {
