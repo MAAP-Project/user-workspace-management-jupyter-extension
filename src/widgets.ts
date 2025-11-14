@@ -28,7 +28,7 @@ class SshWidget extends Widget {
 
 export
 class UserInfoWidget extends Widget {
-  constructor(username:string,email:string,org:string) {
+  constructor(username:string,email:string,orgs:string) {
     let body = document.createElement('div');
     body.style.display = 'flex';
     body.style.flexDirection = 'column';
@@ -39,7 +39,7 @@ class UserInfoWidget extends Widget {
     let email_node = document.createTextNode('Email: '+email);
     body.appendChild(email_node);
     body.appendChild(document.createElement('br'));
-    let org_node = document.createTextNode('Organization: '+org);
+    let org_node = document.createTextNode('Organization: '+orgs);
     body.appendChild(org_node);
     super({node: body});
   }

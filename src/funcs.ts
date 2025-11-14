@@ -28,12 +28,13 @@ export function checkUserInfo(): void {
     }
     let username = profile['username']
     let email = profile['email']
-    let org = profile['organizations']
+    let orgs = profile['organizations']
+    orgs = orgs.map(org => org.name).join(", ");
 
     // popup info
     showDialog({
       title: 'User Information:',
-      body: new UserInfoWidget(username,email,org),
+      body: new UserInfoWidget(username,email,orgs),
       focusNodeSelector: 'input',
       buttons: [Dialog.okButton({label: 'Ok'})]
     });
@@ -52,8 +53,8 @@ export async function getPresignedUrl(state: IStateDB, key:string, duration:stri
        
     relUrl += "?home_path=" + PageConfig.getOption("serverRoot");
     relUrl += "&key=" + key["path"];
-    relUrl += "&username=" + profile.uname;
-    relUrl += "&proxy-ticket=" + profile.ticket;
+    relUrl += "&username=" + profile.username;
+    relUrl += "&proxy-ticket=" + profile.session_key;
     relUrl += "&duration=" + duration;
     
     request('get', relUrl).then((res: RequestResult) => {
@@ -134,7 +135,7 @@ request('get', valuesUrl.href).then((res: RequestResult) => {
 });
 
 export async function getUsernameToken(state: IStateDB) {
-  let defResult = {uname: 'anonymous', ticket: ''}
+  let defResult = {username: 'anonymous', session_key: ''}
 
   if ("https://" + ade_server === document.location.origin) {
     let profile = await getUserInfoAsyncWrapper();
@@ -143,13 +144,13 @@ export async function getUsernameToken(state: IStateDB) {
       Notification.error("Get profile failed.");
       return defResult
     } else {
-      return {uname: profile['username'], ticket: profile['session_key']}
+      return {username: profile['username'], session_key: profile['session_key']}
     }
 
   } else {
     return state.fetch(profileId).then((profile) => {
       let profileObj = JSON.parse(JSON.stringify(profile));
-      return {uname: profileObj.username, ticket: profileObj.session_key}
+      return {username: profileObj.username, session_key: profileObj.session_key}
     }).catch((error) => {
       return defResult
     });
