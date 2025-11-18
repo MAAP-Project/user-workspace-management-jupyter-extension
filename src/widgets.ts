@@ -11,17 +11,23 @@ class SshWidget extends Widget {
     body.style.display = 'flex';
     body.style.flexDirection = 'column';
 
-    request('get', PageConfig.getBaseUrl() + "jupyter-server-extension/uwm/getSSHInfo").then((res: RequestResult) => {
-      if(res.ok){
-        let json_results:any = res.json();
-        let ip = json_results['ip'];
-        let port = json_results['port'];
-        let message = "ssh root@" + ip + " -p " + port;
-        // let message = "ssh -i <path_to_your_key> root@" + ip + " -p " + port;
-        let contents = document.createTextNode(message);
-        body.appendChild(contents);
-      }
-    });
+    let link = document.createElement('a');
+    link.href = 'https://docs.openveda.cloud/user-guide/scientific-computing/ssh.html';
+    link.target = '_blank';
+    link.textContent = 'docs for connecting to ssh';
+    body.appendChild(link);
+
+    // request('get', PageConfig.getBaseUrl() + "jupyter-server-extension/uwm/getSSHInfo").then((res: RequestResult) => {
+    //   if(res.ok){
+    //     let json_results:any = res.json();
+    //     let ip = json_results['ip'];
+    //     let port = json_results['port'];
+    //     let message = "ssh root@" + ip + " -p " + port;
+    //     // let message = "ssh -i <path_to_your_key> root@" + ip + " -p " + port;
+    //     let contents = document.createTextNode(message);
+    //     body.appendChild(contents);
+    //   }
+    // });
     super({ node: body });
   }
 }
@@ -29,8 +35,6 @@ class SshWidget extends Widget {
 export
 class UserInfoWidget extends Widget {
   constructor(username:string,email:string,orgs:string) {
-    console.log("gracea1 in UserInfoWidget");
-    console.log(orgs);
     let body = document.createElement('div');
     body.style.display = 'flex';
     body.style.flexDirection = 'column';
