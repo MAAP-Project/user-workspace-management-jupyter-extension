@@ -142,9 +142,6 @@ request('get', valuesUrl.href).then((res: RequestResult) => {
 
 export async function getUsernameToken(state: IStateDB) {
   let defResult = {username: 'anonymous', session_key: ''}
-  console.log("graceal1 ade server and document locatoin is");
-  console.log(ade_server);
-  console.log(document.location.origin);
   if ("https://" + ade_server === document.location.origin) {
     let profile = await getUserInfoAsyncWrapper();
 
