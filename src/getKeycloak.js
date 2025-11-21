@@ -7,8 +7,6 @@ export var getUserInfo = function(callback, firstTry=true) {
       if (xhr.status == 200) {
         try {
           let response = JSON.parse(xhr.response);
-          console.log("graceal1 in getUserInfo with response for callback being");
-          console.log(response)
           if (response) {
             response = response["profile"]
           }

@@ -10,11 +10,12 @@ class SshWidget extends Widget {
     let body = document.createElement('div');
     body.style.display = 'flex';
     body.style.flexDirection = 'column';
-
+    
+    // for now we are just linking to the documentation as Alex suggested 
     let link = document.createElement('a');
     link.href = 'https://docs.openveda.cloud/user-guide/scientific-computing/ssh.html';
     link.target = '_blank';
-    link.textContent = 'docs for connecting to ssh';
+    link.textContent = 'Docs for connecting to ssh';
     body.appendChild(link);
 
     // request('get', PageConfig.getBaseUrl() + "jupyter-server-extension/uwm/getSSHInfo").then((res: RequestResult) => {
@@ -55,13 +56,15 @@ export class InjectSSH {
   constructor() {
 
     getUserInfo(function(profile: any) {
-      console.log("graceal1 in get user info function callback in injectSSH")
-      console.log(profile);
       if (profile == undefined) {
         Notification.warning("Profile not defined so PGT token not set. Some services may be unavailable.");
         return;
       }
-      if (profile["public_ssh_key"] == undefined || profile['session_key'] == undefined) {
+      if (profile['session_key'] == undefined) {
+        Notification.warning("User's PGT token undefined. SSH service unavailable.");
+        return;
+      }
+      if (profile["public_ssh_key"] == undefined) {
         Notification.warning("User's SSH Key undefined. SSH service unavailable.");
         return;
       }
@@ -77,15 +80,15 @@ export class InjectSSH {
       xhrInjectPublicKey.open("GET", getUrlInjectPublicKey.href, true);
       xhrInjectPublicKey.send(null);
 
-      let getUrlInjectPGT = new URL(PageConfig.getBaseUrl() + "jupyter-server-extension/uwm/injectPGT");
-      getUrlInjectPGT.searchParams.append("proxyGrantingTicket", profile['session_key']);
+      // let getUrlInjectPGT = new URL(PageConfig.getBaseUrl() + "jupyter-server-extension/uwm/injectPGT");
+      // getUrlInjectPGT.searchParams.append("proxyGrantingTicket", profile['session_key']);
 
-      let xhrInjectPGT = new XMLHttpRequest();
-      xhrInjectPGT.onload = function() {
-          console.log("Checked for/injected user's PGT");
-      };
-      xhrInjectPGT.open("GET", getUrlInjectPGT.href, true);
-      xhrInjectPGT.send(null);
+      // let xhrInjectPGT = new XMLHttpRequest();
+      // xhrInjectPGT.onload = function() {
+      //     console.log("Checked for/injected user's PGT");
+      // };
+      // xhrInjectPGT.open("GET", getUrlInjectPGT.href, true);
+      // xhrInjectPGT.send(null);
     });
   }
 }

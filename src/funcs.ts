@@ -22,7 +22,6 @@ export async function checkSSH() {
 
 export function checkUserInfo(): void {
   getUserInfo(function(profile: any) {
-    console.log("graceal1 in checkUserInfo top");
     
     if (profile == undefined) {
       Notification.error("Get user profile failed.");
@@ -37,7 +36,6 @@ export function checkUserInfo(): void {
     let email = profile['email']
     let orgs = profile['organizations']
     orgs = orgs.map(org => org.name).join(", ");
-    console.log("graceal1 got list to pass to user info widget");
 
     // popup info
     showDialog({
@@ -132,39 +130,36 @@ export function activateGetPresignedUrl(
   // }
 }
 
-// let ade_server = '';
-// var valuesUrl = new URL(PageConfig.getBaseUrl() + 'jupyter-server-extension/getConfig');
+let ade_server = '';
+var valuesUrl = new URL(PageConfig.getBaseUrl() + 'jupyter-server-extension/getConfig');
 
-// request('get', valuesUrl.href).then((res: RequestResult) => {
-//   if (res.ok) {
-//     let environment = JSON.parse(res.data);
-//     ade_server = environment['ade_server'];
-//   }
-// });
+request('get', valuesUrl.href).then((res: RequestResult) => {
+  if (res.ok) {
+    let environment = JSON.parse(res.data);
+    ade_server = environment['ade_server'];
+  }
+});
 
 export async function getUsernameToken(state: IStateDB) {
   let defResult = {username: 'anonymous', session_key: ''}
+  console.log("graceal1 ade server and document locatoin is");
+  console.log(ade_server);
+  console.log(document.location.origin);
+  if ("https://" + ade_server === document.location.origin) {
+    let profile = await getUserInfoAsyncWrapper();
 
-  //if ("https://" + ade_server === document.location.origin) {
-  let profile = await getUserInfoAsyncWrapper();
-  console.log('graceal1 in getUsernameToken');
-  console.log(profile);
-
-  if (profile['username'] === undefined) {
-    Notification.error("Get profile failed.");
-    return defResult
+    if (profile['username'] === undefined) {
+      Notification.error("Get profile failed.");
+      return defResult
+    } else {
+      return {username: profile['username'], session_key: profile['session_key']}
+    }
   } else {
-    return {username: profile['username'], session_key: profile['session_key']}
+    return state.fetch(profileId).then((profile) => {
+      let profileObj = JSON.parse(JSON.stringify(profile));
+      return {username: profileObj.username, session_key: profileObj.session_key}
+    }).catch((error) => {
+      return defResult
+    });
   }
-
-    // Marjorie was this else for local development? I am commenting out for now to avoid 
-    // keeping track of the current ADE url 
-  // } else {
-  //   return state.fetch(profileId).then((profile) => {
-  //     let profileObj = JSON.parse(JSON.stringify(profile));
-  //     return {username: profileObj.username, session_key: profileObj.session_key}
-  //   }).catch((error) => {
-  //     return defResult
-  //   });
-  // }
 }
