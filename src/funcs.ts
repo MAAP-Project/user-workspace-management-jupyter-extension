@@ -22,18 +22,25 @@ export async function checkSSH() {
 
 export function checkUserInfo(): void {
   getUserInfo(function(profile: any) {
-    if (profile['cas:username'] === undefined) {
+    
+    if (profile == undefined) {
+      Notification.error("Get user profile failed.");
+      return;
+    }
+
+    if (profile['username'] === undefined) {
         Notification.error("Get user profile failed.");
         return;
     }
-    let username = profile['cas:username']
-    let email = profile['cas:email']
-    let org = profile['organization']
+    let username = profile['username']
+    let email = profile['email']
+    let orgs = profile['organizations']
+    orgs = orgs.map(org => org.name).join(", ");
 
     // popup info
     showDialog({
       title: 'User Information:',
-      body: new UserInfoWidget(username,email,org),
+      body: new UserInfoWidget(username,email,orgs),
       focusNodeSelector: 'input',
       buttons: [Dialog.okButton({label: 'Ok'})]
     });
@@ -52,8 +59,8 @@ export async function getPresignedUrl(state: IStateDB, key:string, duration:stri
        
     relUrl += "?home_path=" + PageConfig.getOption("serverRoot");
     relUrl += "&key=" + key["path"];
-    relUrl += "&username=" + profile.uname;
-    relUrl += "&proxy-ticket=" + profile.ticket;
+    relUrl += "&username=" + profile.username;
+    relUrl += "&proxy-ticket=" + profile.session_key;
     relUrl += "&duration=" + duration;
     
     request('get', relUrl).then((res: RequestResult) => {
@@ -134,22 +141,20 @@ request('get', valuesUrl.href).then((res: RequestResult) => {
 });
 
 export async function getUsernameToken(state: IStateDB) {
-  let defResult = {uname: 'anonymous', ticket: ''}
-
+  let defResult = {username: 'anonymous', session_key: ''}
   if ("https://" + ade_server === document.location.origin) {
-    let kcProfile = await getUserInfoAsyncWrapper();
+    let profile = await getUserInfoAsyncWrapper();
 
-    if (kcProfile['cas:username'] === undefined) {
+    if (profile['username'] === undefined) {
       Notification.error("Get profile failed.");
       return defResult
     } else {
-      return {uname: kcProfile['cas:username'], ticket: kcProfile['proxyGrantingTicket']}
+      return {username: profile['username'], session_key: profile['session_key']}
     }
-
   } else {
     return state.fetch(profileId).then((profile) => {
       let profileObj = JSON.parse(JSON.stringify(profile));
-      return {uname: profileObj.preferred_username, ticket: profileObj.proxyGrantingTicket}
+      return {username: profileObj.username, session_key: profileObj.session_key}
     }).catch((error) => {
       return defResult
     });
