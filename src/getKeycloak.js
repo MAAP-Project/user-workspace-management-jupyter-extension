@@ -1,7 +1,7 @@
 import {PageConfig} from "@jupyterlab/coreutils";
 
 export var getUserInfo = function(callback, firstTry=true) {
-    var requestUrl = new URL(PageConfig.getBaseUrl() + 'jupyter-server-extension/uwm/getAccountInfoFromPGTENV');
+    var requestUrl = new URL(PageConfig.getBaseUrl() + 'maap-jupyter-server-extension/get-account-into-pgt-token"');
     var xhr = new XMLHttpRequest();
     xhr.onload = function() {
       if (xhr.status == 200) {
@@ -12,10 +12,10 @@ export var getUserInfo = function(callback, firstTry=true) {
           }
           callback(response)
         } catch (error) {
-          console.log("Incorrectly formatted response from jupyter-server-extension/uwm/getAccountInfoFromPGTENV");
+          console.log("Incorrectly formatted response from maap-jupyter-server-extension/get-account-into-pgt-token");
         }
       } else {
-        console.log("Bad response from jupyter-server-extension/uwm/getAccountInfoFromPGTENV");
+        console.log("Bad response from maap-jupyter-server-extension/get-account-into-pgt-token");
       }
     };
     xhr.onerror = function() {

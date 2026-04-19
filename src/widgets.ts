@@ -70,7 +70,7 @@ export class InjectSSH {
       }
       let key = profile["public_ssh_key"];
 
-      let getUrlInjectPublicKey = new URL(PageConfig.getBaseUrl() + "jupyter-server-extension/uwm/injectPublicKey");
+      let getUrlInjectPublicKey = new URL(PageConfig.getBaseUrl() + "maap-jupyter-server-extension/inject-public-key");
       getUrlInjectPublicKey.searchParams.append("key", key);
               
       let xhrInjectPublicKey = new XMLHttpRequest();

@@ -55,7 +55,7 @@ export async function getPresignedUrl(state: IStateDB, key:string, duration:stri
 
     console.log("The key is: ", key)
 
-    var relUrl = "/" + window.location.pathname.split("/")[1] + "/" + window.location.pathname.split("/")[2] + "/jupyter-server-extension/uwm/getSignedS3Url";
+    var relUrl = "/" + window.location.pathname.split("/")[1] + "/" + window.location.pathname.split("/")[2] + "/maap-jupyter-server-extension/get-presigned-s3-url";
        
     relUrl += "?home_path=" + PageConfig.getOption("serverRoot");
     relUrl += "&key=" + key["path"];
@@ -131,7 +131,7 @@ export function activateGetPresignedUrl(
 }
 
 let ade_server = '';
-var valuesUrl = new URL(PageConfig.getBaseUrl() + 'jupyter-server-extension/getConfig');
+var valuesUrl = new URL(PageConfig.getBaseUrl() + 'maap-jupyter-server-extension/get-config');
 
 request('get', valuesUrl.href).then((res: RequestResult) => {
   if (res.ok) {
