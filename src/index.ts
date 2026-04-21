@@ -3,9 +3,14 @@ import { JupyterFrontEnd, JupyterFrontEndPlugin } from '@jupyterlab/application'
 import { IFileBrowserFactory } from '@jupyterlab/filebrowser';
 import { ILauncher } from '@jupyterlab/launcher';
 import { IStateDB } from '@jupyterlab/statedb';
+import { ISettingRegistry } from '@jupyterlab/settingregistry';
 import { checkUserInfo, checkSSH, activateGetPresignedUrl } from './funcs'
 import { InjectSSH } from './widgets'
 import '../style/index.css';
+
+
+const sharedSettingsPluginId = 'maap-jupyter-server-extension:plugin';
+const userWorkspaceManagementSettingsPluginId = 'maap_user_workspace_management_jupyter_extension:plugin';
 
 ///////////////////////////////////////////////////////////////
 //
@@ -75,9 +80,37 @@ const extensionUser: JupyterFrontEndPlugin<void> = {
 ///////////////////////////////////////////////////////////////
 const extensionPreSigneds3Url: JupyterFrontEndPlugin<void> = {
   id: 'share-s3-url',
-  requires: [ICommandPalette, IFileBrowserFactory, IStateDB],
+  requires: [ICommandPalette, IFileBrowserFactory, IStateDB, ISettingRegistry],
   autoStart: true,
-  activate: activateGetPresignedUrl
+  activate: async (
+    app: JupyterFrontEnd,
+    palette: ICommandPalette,
+    factory: IFileBrowserFactory,
+    state: IStateDB,
+    registry: ISettingRegistry
+  ) => {
+    // Load the settings for this plugin
+    let loadedId = sharedSettingsPluginId;
+    let settings: ISettingRegistry.ISettings;
+
+    try {
+      settings = await registry.load(loadedId);
+    } catch (err) {
+      console.warn(`Did not load settings for "${loadedId}: ", ${err}`);
+
+      loadedId = userWorkspaceManagementSettingsPluginId;
+
+      try {
+        settings = await registry.load(loadedId);
+      } catch (err2) {
+        console.error(`Failed to load fallback settings "${loadedId}"`, err2);
+        throw err2;
+      }
+    }
+
+    console.log(`Settings loaded from: ${loadedId}`);
+    activateGetPresignedUrl(app, palette, factory, state, settings);
+  }
 };
 
 export default [extensionSsh, extensionUser, extensionPreSigneds3Url];

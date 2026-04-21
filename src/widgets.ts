@@ -1,7 +1,7 @@
 import {Widget} from "@lumino/widgets";
 import {request, RequestResult} from "./request";
 import {PageConfig} from "@jupyterlab/coreutils";
-import {getUserInfo} from "./getKeycloak";
+import {getUserInfo} from "./funcs";
 import { Notification } from "@jupyterlab/apputils";
 
 export
