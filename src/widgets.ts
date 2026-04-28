@@ -1,8 +1,9 @@
 import {Widget} from "@lumino/widgets";
 import {request, RequestResult} from "./request";
 import {PageConfig} from "@jupyterlab/coreutils";
-import {getUserInfo} from "./funcs";
+import {getUserInfo, createDirectory, createFile, readFile, directoryExists} from "./funcs";
 import { Notification } from "@jupyterlab/apputils";
+import { JupyterFrontEnd } from '@jupyterlab/application';
 
 export
 class SshWidget extends Widget {
@@ -52,9 +53,60 @@ class UserInfoWidget extends Widget {
   }
 }
 
-export class InjectSSH {
-  constructor() {
+/**
+ * Inject SSH public key into authorized_keys file
+ */
+const injectPublicKey = async (
+  publicKey: string,
+  jupyterApp: JupyterFrontEnd
+): Promise<void> => {
+  console.log("=== Injecting SSH KEY ===");
+  console.log("graceal1 found key");
+  console.log(publicKey);
 
+  const sshDir = '.ssh';
+  const authorizedKeysPath = '.ssh/authorized_keys';
+
+  try {
+    // Check if .ssh directory exists, if not create it
+    const sshDirExists = await directoryExists(sshDir, jupyterApp);
+    if (!sshDirExists) {
+      await createDirectory(sshDir, jupyterApp);
+      console.log("Created .ssh directory");
+    }
+
+    // Check if authorized_keys file exists
+    let authorizedKeysContent = await readFile(authorizedKeysPath, jupyterApp);
+
+    // If file doesn't exist, create it
+    if (authorizedKeysContent === null) {
+      authorizedKeysContent = '';
+    }
+
+    // Check if key already in file
+    if (authorizedKeysContent.includes(publicKey)) {
+      console.log("Key already in authorized_keys");
+      console.log("=== KEY ALREADY PRESENT ===");
+      return;
+    }
+
+    // Append key to authorized_keys
+    const newContent = authorizedKeysContent
+      ? `${authorizedKeysContent}\n${publicKey}\n`
+      : `${publicKey}\n`;
+
+    await createFile(newContent, authorizedKeysPath, jupyterApp);
+    console.log("=== INJECTED KEY ===");
+  } catch (error) {
+    console.error("Error injecting SSH key:", error);
+    Notification.error("Failed to inject SSH key. Please check console for details.", {
+      autoClose: 5000
+    });
+  }
+};
+
+export class InjectSSH {
+  constructor(jupyterApp: JupyterFrontEnd) {
     getUserInfo(function(profile: any) {
       if (profile == undefined) {
         Notification.warning("Profile not defined so PGT token not set. Some services may be unavailable.");
@@ -68,27 +120,15 @@ export class InjectSSH {
         Notification.warning("User's SSH Key undefined. SSH service unavailable.");
         return;
       }
-      let key = profile["public_ssh_key"];
 
-      let getUrlInjectPublicKey = new URL(PageConfig.getBaseUrl() + "maap-jupyter-server-extension/inject-public-key");
-      getUrlInjectPublicKey.searchParams.append("key", key);
-              
-      let xhrInjectPublicKey = new XMLHttpRequest();
-      xhrInjectPublicKey.onload = function() {
-          console.log("Checked for/injected user's public key");
-      };
-      xhrInjectPublicKey.open("GET", getUrlInjectPublicKey.href, true);
-      xhrInjectPublicKey.send(null);
+      const key = profile["public_ssh_key"];
 
-      // let getUrlInjectPGT = new URL(PageConfig.getBaseUrl() + "jupyter-server-extension/uwm/injectPGT");
-      // getUrlInjectPGT.searchParams.append("proxyGrantingTicket", profile['session_key']);
-
-      // let xhrInjectPGT = new XMLHttpRequest();
-      // xhrInjectPGT.onload = function() {
-      //     console.log("Checked for/injected user's PGT");
-      // };
-      // xhrInjectPGT.open("GET", getUrlInjectPGT.href, true);
-      // xhrInjectPGT.send(null);
+      // Inject the public key using TypeScript file operations
+      injectPublicKey(key, jupyterApp).then(() => {
+        console.log("Checked for/injected user's public key");
+      }).catch((error) => {
+        console.error("Failed to inject public key:", error);
+      });
     });
   }
 }
