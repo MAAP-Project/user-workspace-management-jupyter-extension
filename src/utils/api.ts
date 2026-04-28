@@ -67,6 +67,11 @@ export function createMaapApi(getLatestSettings: GetLatestSettings) {
       headers['cpticket'] = maapToken;
     }
 
+    console.log("graceal1 about to make a request in api.ts with ");
+    console.log(finalUrl);
+    console.log(opts);
+    console.log(headers);
+
     const response = await fetch(finalUrl, {
       ...opts,
       headers

@@ -96,7 +96,9 @@ export async function getPresignedUrl(state: IStateDB, key: any, duration:string
     if (presignedS3Url) {
       console.log("graceal1 got response");
       console.log(presignedS3Url)
-      resolve(presignedS3Url);
+      console.log(presignedS3Url["url"]);
+      console.log(presignedS3Url.url);
+      resolve(presignedS3Url["url"]);
     } else {
       Notification.error('Failed to get presigned s3 url, make sure the current directory is mounted', {autoClose: 3000});
       resolve(presignedUrl);
