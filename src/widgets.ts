@@ -108,6 +108,8 @@ const injectPublicKey = async (
 export class InjectSSH {
   constructor(jupyterApp: JupyterFrontEnd) {
     getUserInfo(function(profile: any) {
+      console.log("graceal1 in InjectSSH callback with profile");
+      console.log(profile)
       if (profile == undefined) {
         Notification.warning("Profile not defined so PGT token not set. Some services may be unavailable.");
         return;
@@ -120,8 +122,6 @@ export class InjectSSH {
         Notification.warning("User's SSH Key undefined. SSH service unavailable.");
         return;
       }
-      console.log("graceal1 in InjectSSH with profile");
-      console.log(profile);
 
       const key = profile["public_ssh_key"];
 
