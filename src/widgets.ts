@@ -120,6 +120,8 @@ export class InjectSSH {
         Notification.warning("User's SSH Key undefined. SSH service unavailable.");
         return;
       }
+      console.log("graceal1 in InjectSSH with profile");
+      console.log(profile);
 
       const key = profile["public_ssh_key"];
 

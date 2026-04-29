@@ -64,7 +64,7 @@ export function createMaapApi(getLatestSettings: GetLatestSettings) {
     }
 
     if (opts.auth) {
-      headers['cpticket'] = maapToken;
+      headers['proxy-ticket'] = maapToken;
     }
 
     console.log("graceal1 about to make a request in api.ts with ");
