@@ -106,7 +106,7 @@ const injectPublicKey = async (
 };
 
 export class InjectSSH {
-  constructor(jupyterApp: JupyterFrontEnd) {
+  constructor() {
     getUserInfo(function(profile: any) {
       console.log("graceal1 in InjectSSH callback with profile");
       console.log(profile)
@@ -123,14 +123,17 @@ export class InjectSSH {
         return;
       }
 
-      const key = profile["public_ssh_key"];
+      let key = profile["public_ssh_key"];
 
-      // Inject the public key using TypeScript file operations
-      injectPublicKey(key, jupyterApp).then(() => {
-        console.log("Checked for/injected user's public key");
-      }).catch((error) => {
-        console.error("Failed to inject public key:", error);
-      });
+      let getUrlInjectPublicKey = new URL(PageConfig.getBaseUrl() + "maap-jupyter-server-extension/inject-public-key");
+      getUrlInjectPublicKey.searchParams.append("key", key);
+              
+      let xhrInjectPublicKey = new XMLHttpRequest();
+      xhrInjectPublicKey.onload = function() {
+          console.log("Checked for/injected user's public key");
+      };
+      xhrInjectPublicKey.open("GET", getUrlInjectPublicKey.href, true);
+      xhrInjectPublicKey.send(null);
     });
-  }
+    }
 }
