@@ -29,7 +29,7 @@ function activateSSH(app: JupyterFrontEnd,
   palette: ICommandPalette) {
     console.log("graceal1 in activateSSH");
 
-      new InjectSSH(app);
+      new InjectSSH();
 
       // Add an application command
       const open_command = 'sshinfo:open';
