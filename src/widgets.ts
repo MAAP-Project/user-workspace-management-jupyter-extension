@@ -1,9 +1,6 @@
 import {Widget} from "@lumino/widgets";
 import {request, RequestResult} from "./request";
 import {PageConfig} from "@jupyterlab/coreutils";
-import {getUserInfo, createDirectory, createFile, readFile, directoryExists} from "./funcs";
-import { Notification } from "@jupyterlab/apputils";
-import { JupyterFrontEnd } from '@jupyterlab/application';
 
 export
 class SshWidget extends Widget {
@@ -52,58 +49,6 @@ class UserInfoWidget extends Widget {
     super({node: body});
   }
 }
-
-/**
- * Inject SSH public key into authorized_keys file
- */
-const injectPublicKey = async (
-  publicKey: string,
-  jupyterApp: JupyterFrontEnd
-): Promise<void> => {
-  console.log("=== Injecting SSH KEY ===");
-  console.log("graceal1 found key");
-  console.log(publicKey);
-
-  const sshDir = '.ssh';
-  const authorizedKeysPath = '.ssh/authorized_keys';
-
-  try {
-    // Check if .ssh directory exists, if not create it
-    const sshDirExists = await directoryExists(sshDir, jupyterApp);
-    if (!sshDirExists) {
-      await createDirectory(sshDir, jupyterApp);
-      console.log("Created .ssh directory");
-    }
-
-    // Check if authorized_keys file exists
-    let authorizedKeysContent = await readFile(authorizedKeysPath, jupyterApp);
-
-    // If file doesn't exist, create it
-    if (authorizedKeysContent === null) {
-      authorizedKeysContent = '';
-    }
-
-    // Check if key already in file
-    if (authorizedKeysContent.includes(publicKey)) {
-      console.log("Key already in authorized_keys");
-      console.log("=== KEY ALREADY PRESENT ===");
-      return;
-    }
-
-    // Append key to authorized_keys
-    const newContent = authorizedKeysContent
-      ? `${authorizedKeysContent}\n${publicKey}\n`
-      : `${publicKey}\n`;
-
-    await createFile(newContent, authorizedKeysPath, jupyterApp);
-    console.log("=== INJECTED KEY ===");
-  } catch (error) {
-    console.error("Error injecting SSH key:", error);
-    Notification.error("Failed to inject SSH key. Please check console for details.", {
-      autoClose: 5000
-    });
-  }
-};
 
 export class InjectSSH {
   constructor() {

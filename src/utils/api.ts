@@ -100,7 +100,6 @@ export function createMaapApi(getLatestSettings: GetLatestSettings) {
   // -------------------------
 
   async function getPresigneds3Url(key: string, expiration: string, username: string): Promise<any> {
-    console.log("graceal1 in getPresigneds3Url");
     try {
       const { workspaceBucket } = await getLatestSettings();
       let generatedEndpoint = MAAP_API_ENDPOINTS.GET_PRESIGNED_S3_URL.replace("{BUCKET}", workspaceBucket).replace("{KEY}", key).replace("{EXPIRATION}", expiration).replace("{USERNAME}", username);

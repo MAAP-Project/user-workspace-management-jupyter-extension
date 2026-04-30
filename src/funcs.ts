@@ -89,15 +89,9 @@ export async function getPresignedUrl(state: IStateDB, key: any, duration:string
       return;                                                                                                   
     }  
 
-    // graceal FACT CHECK CAN MAKE CALL BECAYSE IN RIGHT BUCKET
-
     const presignedS3Url = await maapApi!.getPresigneds3Url(key.path, duration, profile.username);
 
     if (presignedS3Url) {
-      console.log("graceal1 got response");
-      console.log(presignedS3Url)
-      console.log(presignedS3Url["url"]);
-      console.log(presignedS3Url.url);
       resolve(presignedS3Url["url"]);
     } else {
       Notification.error('Failed to get presigned s3 url, make sure the current directory is mounted', {autoClose: 3000});
@@ -115,7 +109,6 @@ export function activateGetPresignedUrl(
 ): void {
   // Initialize the MAAP API instance
   initializeMaapApi(settings);
-  console.log("graceal1 in activateGetPresignedUrl");
 
   const { commands } = app;
   const { tracker } = factory;
@@ -211,75 +204,3 @@ export async function getUserInfo(callback, firstTry=true) {
     }
     return defResult;
 }
-
-/**
- * Helper function to create a directory
- */
-export const createDirectory = async (
-  path: string,
-  jupyterApp: JupyterFrontEnd
-): Promise<void> => {
-  try {
-    const contents = jupyterApp.serviceManager.contents;
-    await contents.save(path, {
-      type: 'directory'
-    });
-  } catch (error) {
-    console.error('Error creating directory:', error);
-    throw error;
-  }
-};
-
-/**
- * Helper function to create or write a file
- */
-export const createFile = async (
-  fileContent: string,
-  filePath: string,
-  jupyterApp: JupyterFrontEnd
-): Promise<void> => {
-  try {
-    const contents = jupyterApp.serviceManager.contents;
-    await contents.save(filePath, {
-      type: 'file',
-      format: 'text',
-      content: fileContent
-    });
-  } catch (error) {
-    console.error('Error saving file:', error);
-    throw error;
-  }
-};
-
-/**
- * Helper function to read a file
- */
-export const readFile = async (
-  filePath: string,
-  jupyterApp: JupyterFrontEnd
-): Promise<string | null> => {
-  try {
-    const contents = jupyterApp.serviceManager.contents;
-    const fileModel = await contents.get(filePath, { content: true });
-    return fileModel.content as string;
-  } catch (error) {
-    // File doesn't exist
-    return null;
-  }
-};
-
-/**
- * Helper function to check if a directory exists
- */
-export const directoryExists = async (
-  path: string,
-  jupyterApp: JupyterFrontEnd
-): Promise<boolean> => {
-  try {
-    const contents = jupyterApp.serviceManager.contents;
-    const model = await contents.get(path, { content: false });
-    return model.type === 'directory';
-  } catch (error) {
-    return false;
-  }
-};
