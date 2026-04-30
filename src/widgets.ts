@@ -107,33 +107,12 @@ const injectPublicKey = async (
 
 export class InjectSSH {
   constructor() {
-    getUserInfo(function(profile: any) {
-      console.log("graceal1 in InjectSSH callback with profile");
-      console.log(profile)
-      if (profile == undefined) {
-        Notification.warning("Profile not defined so PGT token not set. Some services may be unavailable.");
-        return;
-      }
-      if (profile['session_key'] == undefined) {
-        Notification.warning("User's PGT token undefined. SSH service unavailable.");
-        return;
-      }
-      if (profile["public_ssh_key"] == undefined) {
-        Notification.warning("User's SSH Key undefined. SSH service unavailable.");
-        return;
-      }
-
-      let key = profile["public_ssh_key"];
-
-      let getUrlInjectPublicKey = new URL(PageConfig.getBaseUrl() + "maap-jupyter-server-extension/inject-public-key");
-      getUrlInjectPublicKey.searchParams.append("key", key);
-              
-      let xhrInjectPublicKey = new XMLHttpRequest();
-      xhrInjectPublicKey.onload = function() {
-          console.log("Checked for/injected user's public key");
-      };
-      xhrInjectPublicKey.open("GET", getUrlInjectPublicKey.href, true);
-      xhrInjectPublicKey.send(null);
-    });
+    let getUrlInjectPublicKey = new URL(PageConfig.getBaseUrl() + "maap-jupyter-server-extension/inject-public-key");   
+    let xhrInjectPublicKey = new XMLHttpRequest();
+    xhrInjectPublicKey.onload = function() {
+        console.log("Checked for/injected user's public key");
+    };
+    xhrInjectPublicKey.open("GET", getUrlInjectPublicKey.href, true);
+    xhrInjectPublicKey.send(null);
     }
 }
