@@ -16,7 +16,7 @@ class SshWidget extends Widget {
     link.textContent = 'Docs for connecting to ssh';
     body.appendChild(link);
     body.appendChild(document.createElement('br'));
-    let changes_node = document.createTextNode('In this example, replace the Host hub.openveda.cloud with '+window.location.host);
+    let changes_node = document.createTextNode('For the above example, replace the Host "hub.openveda.cloud" with "'+window.location.host+'"');
     body.appendChild(changes_node);
 
     // request('get', PageConfig.getBaseUrl() + "jupyter-server-extension/uwm/getSSHInfo").then((res: RequestResult) => {
