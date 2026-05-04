@@ -14,7 +14,7 @@
     "maapToken": {
       "type": "string",
       "title": "MAAP PGT Token",
-      "description": "e.g. PGT-XXXXXXX",
+      "description": "e.g. PGT-XXXXXXX or jwt:xxx",
       "default": ""
     },
     "workspaceBucket": {

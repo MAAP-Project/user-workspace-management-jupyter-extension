@@ -195,8 +195,6 @@ export async function getUserInfo(callback, firstTry=true) {
     }
 
     const profileInformation = await maapApi!.getProfileInformation();
-    console.log("graceal1 in getUserInfo and profileInformation is ");
-    console.log(profileInformation);
     if (!profileInformation && firstTry) {
       getUserInfo(callback, false)
     } else if (profileInformation && callback) {
