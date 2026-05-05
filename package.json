@@ -70,7 +70,8 @@
   },
   "jupyterlab": {
     "extension": true,
-    "outputDir": "maap_user_workspace_management_jupyter_extension/labextension"
+    "outputDir": "maap_user_workspace_management_jupyter_extension/labextension",
+    "schemaDir": "schema"
   },
   "jupyter-releaser": {
     "hooks": {

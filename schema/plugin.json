@@ -1,0 +1,27 @@
+{
+  "jupyter.lab.setting-icon": "ui-components:settings",
+  "title": "Maap User Workspace Settings",
+  "description": "Settings for Maap User Workspace Jupyter extensions.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "maapApiUrl": {
+      "type": "string",
+      "title": "MAAP API URL",
+      "description": "e.g. https://api.maap-project.org/",
+      "default": ""
+    },
+    "maapToken": {
+      "type": "string",
+      "title": "MAAP PGT Token",
+      "description": "e.g. PGT-XXXXXXX or jwt:xxx",
+      "default": ""
+    },
+    "workspaceBucket": {
+      "type": "string",
+      "title": "Workspace Bucket:",
+      "description": "s3 bucket that files are mounted from",
+      "default": ""
+    }
+  }
+}

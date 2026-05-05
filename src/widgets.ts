@@ -1,8 +1,6 @@
 import {Widget} from "@lumino/widgets";
 import {request, RequestResult} from "./request";
 import {PageConfig} from "@jupyterlab/coreutils";
-import {getUserInfo} from "./getKeycloak";
-import { Notification } from "@jupyterlab/apputils";
 
 export
 class SshWidget extends Widget {
@@ -17,6 +15,9 @@ class SshWidget extends Widget {
     link.target = '_blank';
     link.textContent = 'Docs for connecting to ssh';
     body.appendChild(link);
+    body.appendChild(document.createElement('br'));
+    let changes_node = document.createTextNode('For the above example, replace the Host "hub.openveda.cloud" with "'+window.location.host+'"');
+    body.appendChild(changes_node);
 
     // request('get', PageConfig.getBaseUrl() + "jupyter-server-extension/uwm/getSSHInfo").then((res: RequestResult) => {
     //   if(res.ok){
@@ -54,41 +55,12 @@ class UserInfoWidget extends Widget {
 
 export class InjectSSH {
   constructor() {
-
-    getUserInfo(function(profile: any) {
-      if (profile == undefined) {
-        Notification.warning("Profile not defined so PGT token not set. Some services may be unavailable.");
-        return;
-      }
-      if (profile['session_key'] == undefined) {
-        Notification.warning("User's PGT token undefined. SSH service unavailable.");
-        return;
-      }
-      if (profile["public_ssh_key"] == undefined) {
-        Notification.warning("User's SSH Key undefined. SSH service unavailable.");
-        return;
-      }
-      let key = profile["public_ssh_key"];
-
-      let getUrlInjectPublicKey = new URL(PageConfig.getBaseUrl() + "jupyter-server-extension/uwm/injectPublicKey");
-      getUrlInjectPublicKey.searchParams.append("key", key);
-              
-      let xhrInjectPublicKey = new XMLHttpRequest();
-      xhrInjectPublicKey.onload = function() {
-          console.log("Checked for/injected user's public key");
-      };
-      xhrInjectPublicKey.open("GET", getUrlInjectPublicKey.href, true);
-      xhrInjectPublicKey.send(null);
-
-      // let getUrlInjectPGT = new URL(PageConfig.getBaseUrl() + "jupyter-server-extension/uwm/injectPGT");
-      // getUrlInjectPGT.searchParams.append("proxyGrantingTicket", profile['session_key']);
-
-      // let xhrInjectPGT = new XMLHttpRequest();
-      // xhrInjectPGT.onload = function() {
-      //     console.log("Checked for/injected user's PGT");
-      // };
-      // xhrInjectPGT.open("GET", getUrlInjectPGT.href, true);
-      // xhrInjectPGT.send(null);
-    });
-  }
+    let getUrlInjectPublicKey = new URL(PageConfig.getBaseUrl() + "maap-jupyter-server-extension/inject-public-key");   
+    let xhrInjectPublicKey = new XMLHttpRequest();
+    xhrInjectPublicKey.onload = function() {
+        console.log("Checked for/injected user's public key");
+    };
+    xhrInjectPublicKey.open("GET", getUrlInjectPublicKey.href, true);
+    xhrInjectPublicKey.send(null);
+    }
 }

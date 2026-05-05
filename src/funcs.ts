@@ -3,13 +3,36 @@ import { PageConfig } from "@jupyterlab/coreutils";
 import { Dialog, ICommandPalette, showDialog, Notification } from "@jupyterlab/apputils";
 import { IFileBrowserFactory } from "@jupyterlab/filebrowser";
 import { IStateDB } from '@jupyterlab/statedb';
-import { getUserInfo, getUserInfoAsyncWrapper } from "./getKeycloak";
+import { ISettingRegistry } from '@jupyterlab/settingregistry';
 import { SshWidget, UserInfoWidget } from './widgets';
 import { DropdownSelector } from './selector';
 import { popupResult } from './dialogs';
 import { request, RequestResult } from './request';
+import { createMaapApi, type MaapApi } from './utils/api';
 
 const profileId = 'maapsec-extension:IMaapProfile';
+
+// Module-level API instance
+let maapApi: MaapApi | null = null;
+
+/**
+ * Initialize the MAAP API instance with settings
+ */
+export function initializeMaapApi(settings: ISettingRegistry.ISettings): void {
+  const getLatestSettings = async () => {
+    const apiUrlRes = await settings.get('maapApiUrl');
+    const tokenRes = await settings.get('maapToken');
+    const workspaceBucketRes = await settings.get('workspaceBucket');
+
+    return {
+      maapApiUrl: (apiUrlRes.composite as string) ?? '',
+      maapToken: (tokenRes.composite as string) ?? '',
+      workspaceBucket: (workspaceBucketRes.composite as string) ?? ''
+    };
+  };
+
+  maapApi = createMaapApi(getLatestSettings);
+}
 
 export async function checkSSH() {
   showDialog({
@@ -47,40 +70,33 @@ export function checkUserInfo(): void {
   });
 }
 
-export async function getPresignedUrl(state: IStateDB, key:string, duration:string): Promise<string> {
-  const profile = await getUsernameToken(state);  
+export async function getPresignedUrl(state: IStateDB, key: any, duration:string): Promise<string> {
+  if (!maapApi) {
+    Notification.error('MAAP API not initialized', {autoClose: 3000});
+    return '';
+  }
+
+  const profile = await getUsernameToken(state);
 
   return new Promise<string>(async (resolve, reject) => {
     let presignedUrl = '';
 
     console.log("The key is: ", key)
 
-    var relUrl = "/" + window.location.pathname.split("/")[1] + "/" + window.location.pathname.split("/")[2] + "/jupyter-server-extension/uwm/getSignedS3Url";
-       
-    relUrl += "?home_path=" + PageConfig.getOption("serverRoot");
-    relUrl += "&key=" + key["path"];
-    relUrl += "&username=" + profile.username;
-    relUrl += "&proxy-ticket=" + profile.session_key;
-    relUrl += "&duration=" + duration;
-    
-    request('get', relUrl).then((res: RequestResult) => {
-      if (res.ok) {
-        let data:any = JSON.parse(res.data);
-        console.log(data)
-        if (data.status_code == 200) {
-          presignedUrl = data.url;
-          resolve(presignedUrl);
-        } else if (data.status_code == 404) {
-          resolve(data.message);
-        } else {
-          Notification.error('Failed to get presigned s3 url', {autoClose: 3000});
-          resolve(data.url);
-        }
-      } else {
-        Notification.error('Failed to get presigned s3 url', {autoClose: 3000});
-        resolve(presignedUrl);
-      }
-    });
+    if (key.type === 'directory') {                                                                             
+      Notification.error('Presigned S3 links do not support folders', {autoClose: 5000});                       
+      resolve('');                                                                                              
+      return;                                                                                                   
+    }  
+
+    const presignedS3Url = await maapApi!.getPresigneds3Url(key.path, duration, profile.username);
+
+    if (presignedS3Url) {
+      resolve(presignedS3Url["url"]);
+    } else {
+      Notification.error('Failed to get presigned s3 url, make sure the current directory is mounted', {autoClose: 3000});
+      resolve(presignedUrl);
+    }
   });
 }
 
@@ -88,8 +104,12 @@ export function activateGetPresignedUrl(
   app: JupyterFrontEnd,
   palette: ICommandPalette,
   factory: IFileBrowserFactory,
-  state: IStateDB
+  state: IStateDB,
+  settings: ISettingRegistry.ISettings
 ): void {
+  // Initialize the MAAP API instance
+  initializeMaapApi(settings);
+
   const { commands } = app;
   const { tracker } = factory;
 
@@ -130,20 +150,25 @@ export function activateGetPresignedUrl(
   // }
 }
 
-let ade_server = '';
-var valuesUrl = new URL(PageConfig.getBaseUrl() + 'jupyter-server-extension/getConfig');
+export async function getUsernameToken(state: IStateDB) {
+  const defResult = {username: 'anonymous', session_key: ''};
 
-request('get', valuesUrl.href).then((res: RequestResult) => {
+  if (!maapApi) {
+    Notification.error('MAAP API not initialized', {autoClose: 3000});
+    return defResult;
+  }
+
+  const environmentsEndpoint = await maapApi!.getEnvironmentsEndpoint();
+
+  let ade_server = '';
+  const res = await request('get', environmentsEndpoint.href);
   if (res.ok) {
     let environment = JSON.parse(res.data);
     ade_server = environment['ade_server'];
   }
-});
 
-export async function getUsernameToken(state: IStateDB) {
-  let defResult = {username: 'anonymous', session_key: ''}
   if ("https://" + ade_server === document.location.origin) {
-    let profile = await getUserInfoAsyncWrapper();
+    let profile = await getUserInfo(null);
 
     if (profile['username'] === undefined) {
       Notification.error("Get profile failed.");
@@ -159,4 +184,21 @@ export async function getUsernameToken(state: IStateDB) {
       return defResult
     });
   }
+}
+
+
+export async function getUserInfo(callback, firstTry=true) {
+    const defResult = {username: 'anonymous', session_key: ''};
+    if (!maapApi) {
+      Notification.error('MAAP API not initialized', {autoClose: 3000});
+      return defResult;
+    }
+
+    const profileInformation = await maapApi!.getProfileInformation();
+    if (!profileInformation && firstTry) {
+      getUserInfo(callback, false)
+    } else if (profileInformation && callback) {
+      callback(profileInformation);
+    }
+    return defResult;
 }

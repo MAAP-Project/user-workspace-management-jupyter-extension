@@ -22,5 +22,5 @@
     "target": "ES2022",
     "types": []
   },
-  "include": ["src/*"]
+  "include": ["src/**/*"]
 }
