@@ -10,8 +10,6 @@ import { popupResult } from './dialogs';
 import { request, RequestResult } from './request';
 import { createMaapApi, type MaapApi } from './utils/api';
 
-const profileId = 'maapsec-extension:IMaapProfile';
-
 // Module-level API instance
 let maapApi: MaapApi | null = null;
 
@@ -158,31 +156,12 @@ export async function getUsernameToken(state: IStateDB) {
     return defResult;
   }
 
-  const environmentsEndpoint = await maapApi!.getEnvironmentsEndpoint();
-
-  let ade_server = '';
-  const res = await request('get', environmentsEndpoint.href);
-  if (res.ok) {
-    let environment = JSON.parse(res.data);
-    ade_server = environment['ade_server'];
-  }
-
-  if ("https://" + ade_server === document.location.origin) {
-    let profile = await getUserInfo(null);
-
-    if (profile['username'] === undefined) {
-      Notification.error("Get profile failed.");
-      return defResult
-    } else {
-      return {username: profile['username'], session_key: profile['session_key']}
-    }
+  let profile = await getUserInfo(null);
+  if (profile['username'] === undefined) {
+    Notification.error("Get profile failed.");
+    return defResult
   } else {
-    return state.fetch(profileId).then((profile) => {
-      let profileObj = JSON.parse(JSON.stringify(profile));
-      return {username: profileObj.username, session_key: profileObj.session_key}
-    }).catch((error) => {
-      return defResult
-    });
+    return {username: profile['username'], session_key: profile['session_key']}
   }
 }
 
@@ -199,6 +178,10 @@ export async function getUserInfo(callback, firstTry=true) {
       getUserInfo(callback, false)
     } else if (profileInformation && callback) {
       callback(profileInformation);
+    }
+
+    if (profileInformation) {
+      return profileInformation;
     }
     return defResult;
 }
