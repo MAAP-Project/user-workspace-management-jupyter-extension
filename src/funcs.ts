@@ -157,8 +157,6 @@ export async function getUsernameToken(state: IStateDB) {
   }
 
   let profile = await getUserInfo(null);
-  console.log("graceal1 profile in get username token is");
-  console.log(profile);
   if (profile['username'] === undefined) {
     Notification.error("Get profile failed.");
     return defResult
@@ -177,7 +175,6 @@ export async function getUserInfo(callback, firstTry=true) {
 
     const profileInformation = await maapApi!.getProfileInformation();
     if (!profileInformation && firstTry) {
-      console.log("graceal1 call to profile info failed first time")
       getUserInfo(callback, false)
     } else if (profileInformation && callback) {
       callback(profileInformation);
