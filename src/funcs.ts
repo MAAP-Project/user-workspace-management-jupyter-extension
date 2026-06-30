@@ -92,7 +92,15 @@ export async function getPresignedUrl(state: IStateDB, key: any, duration:string
     if (presignedS3Url) {
       resolve(presignedS3Url["url"]);
     } else {
-      Notification.error('Failed to get presigned s3 url, make sure the current directory is mounted', {autoClose: 3000});
+      Notification.error('Failed to get presigned s3 url. Make sure the directory is mounted like my-private-bucket, my-public-bucket, etc.', {
+        autoClose: 5000,
+        actions: [
+          {
+            label: 'More info mounted directories',
+            callback: () => window.open('https://docs.maap-project.org/en/latest/system_reference_guide/share_data.html#Share-Data', '_blank')
+          }
+        ]
+      });
       resolve(presignedUrl);
     }
   });
