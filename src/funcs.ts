@@ -92,7 +92,7 @@ export async function getPresignedUrl(state: IStateDB, key: any, duration:string
     if (presignedS3Url) {
       resolve(presignedS3Url["url"]);
     } else {
-      Notification.error('Failed to get presigned s3 url, make sure the current directory is mounted like my-private-bucket, my-public-bucket, shared-buckets, triaged-jobs', {autoClose: 3000});
+      Notification.error('Failed to get presigned s3 url, make sure the current directory is mounted like my-private-bucket, my-public-bucket, my-team-buckets, shared-buckets, triaged-jobs', {autoClose: 3000});
       resolve(presignedUrl);
     }
   });
