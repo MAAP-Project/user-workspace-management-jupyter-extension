@@ -93,8 +93,6 @@ export async function getPresignedUrl(state: IStateDB, key: any, duration:string
       resolve(presignedS3Url["url"]);
     } else {
       let err_message = "Error getting the presigned s3 url, make sure your current folder is mounted to S3";
-      console.log("graceal1 .message")
-      console.log(presignedS3Url.message)
       try {
         let presignedS3UrlParsed = JSON.parse(presignedS3Url.message); 
         if (presignedS3UrlParsed["message"]) {
@@ -103,9 +101,6 @@ export async function getPresignedUrl(state: IStateDB, key: any, duration:string
       } catch (err) {
         console.error(`JSON Parsing failed: ${err}`);
       }
-      
-      console.log("graceal1 trying to display THIS error message")
-      console.log(err_message)
 
       Notification.error(err_message, {
         autoClose: 5000,
