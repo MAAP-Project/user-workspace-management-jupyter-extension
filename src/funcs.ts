@@ -97,7 +97,8 @@ export async function getPresignedUrl(state: IStateDB, key: any, duration:string
       console.log(presignedS3Url["message"]);
 
       try {
-        const presignedS3UrlParsed = JSON.parse(presignedS3Url); 
+        let presignedS3UrlParsed = presignedS3Url.replace(/^Error:\s*/, "");
+        presignedS3UrlParsed = JSON.parse(presignedS3Url); 
         if (presignedS3UrlParsed["message"]) {
           err_message = presignedS3UrlParsed["message"]
         } 
