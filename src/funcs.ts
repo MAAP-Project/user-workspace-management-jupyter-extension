@@ -89,10 +89,21 @@ export async function getPresignedUrl(state: IStateDB, key: any, duration:string
 
     const presignedS3Url = await maapApi!.getPresigneds3Url(key.path, duration, profile.username);
 
-    if (presignedS3Url) {
+    if (presignedS3Url && presignedS3Url["url"]) {
       resolve(presignedS3Url["url"]);
     } else {
-      Notification.error(presignedS3Url["message"], {
+      let err_message;
+      console.log("graceal1 errro getting presigned url")
+      console.log(presignedS3Url["message"]);
+      if (presignedS3Url["message"]) {
+        err_message = presignedS3Url["message"]
+      } else {
+        err_message = "Error getting the presigned s3 url, make sure your current folder is mounted to S3"
+      }
+      console.log("graceal1 trying to display error message")
+      console.log(err_message)
+
+      Notification.error(err_message, {
         autoClose: 5000,
         actions: [
           {
