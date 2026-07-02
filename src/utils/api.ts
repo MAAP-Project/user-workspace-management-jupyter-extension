@@ -106,8 +106,7 @@ export function createMaapApi(getLatestSettings: GetLatestSettings) {
       }
       return presigneds3Url;
     } catch (err) {
-      console.log("graceal1 caught error for presigned url and returning null")
-      console.error(err);
+      console.error(`Error getting presigned url "${err}`);
       return err;
     }
   }
