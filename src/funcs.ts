@@ -106,7 +106,7 @@ export async function getPresignedUrl(state: IStateDB, key: any, duration:string
         autoClose: 5000,
         actions: [
           {
-            label: 'More info which directories are mounted to s3',
+            label: 'More info about which directories are mounted to s3',
             callback: () => window.open('https://docs.maap-project.org/en/latest/system_reference_guide/share_data.html#Share-Data', '_blank')
           }
         ]
