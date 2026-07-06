@@ -89,14 +89,24 @@ export async function getPresignedUrl(state: IStateDB, key: any, duration:string
 
     const presignedS3Url = await maapApi!.getPresigneds3Url(key.path, duration, profile.username);
 
-    if (presignedS3Url) {
+    if (presignedS3Url && presignedS3Url["url"]) {
       resolve(presignedS3Url["url"]);
     } else {
-      Notification.error('Failed to get presigned s3 url. Make sure the directory is mounted like my-private-bucket, my-public-bucket, etc.', {
+      let err_message = "Error getting the presigned s3 url, make sure your current folder is mounted to S3";
+      try {
+        let presignedS3UrlParsed = JSON.parse(presignedS3Url.message); 
+        if (presignedS3UrlParsed["message"]) {
+          err_message = presignedS3UrlParsed["message"]
+        } 
+      } catch (err) {
+        console.error(`JSON Parsing failed: ${err}`);
+      }
+
+      Notification.error(err_message, {
         autoClose: 5000,
         actions: [
           {
-            label: 'More info mounted directories',
+            label: 'More info about which directories are mounted to s3',
             callback: () => window.open('https://docs.maap-project.org/en/latest/system_reference_guide/share_data.html#Share-Data', '_blank')
           }
         ]

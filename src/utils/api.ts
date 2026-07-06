@@ -74,10 +74,7 @@ export function createMaapApi(getLatestSettings: GetLatestSettings) {
 
     if (!response.ok) {
       const details = await readErrorPayload(response);
-      const message = `HTTP ${response.status} ${response.statusText}${
-        details ? `\nDetails: ${details}` : ''
-      }`;
-      throw new Error(message);
+      throw new Error(details);
     }
 
     // Try JSON first; fall back to text if no JSON
@@ -109,8 +106,8 @@ export function createMaapApi(getLatestSettings: GetLatestSettings) {
       }
       return presigneds3Url;
     } catch (err) {
-      console.error(err);
-      return null;
+      console.error(`Error getting presigned url "${err}`);
+      return err;
     }
   }
 
